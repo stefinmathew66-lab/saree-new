@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function TrendTranslation({ onSignInClick }) {
+export default function TrendTranslation({ onSignInClick, onTrendClick }) {
   const trends = [
     {
       image: '/trend_free_spirit.jpg',
@@ -48,7 +48,18 @@ export default function TrendTranslation({ onSignInClick }) {
         marginBottom: '2rem'
       }}>
         {trends.map((trend, index) => (
-          <div key={index} style={{ display: 'flex', flexDirection: 'column' }}>
+          <div 
+            key={index} 
+            onClick={() => onTrendClick && onTrendClick(trend.label.toLowerCase().replace(' ', '-'))}
+            style={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              cursor: 'pointer',
+              transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+          >
             <div style={{
               width: '100%',
               aspectRatio: '3/4',

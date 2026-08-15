@@ -12,6 +12,7 @@ import WelcomePopup from './components/WelcomePopup';
 import ProductCard from './components/ProductCard';
 import ProductDetailView from './components/ProductDetailView';
 import TrendTranslation from './components/TrendTranslation';
+import TrendCollectionView from './components/TrendCollectionView';
 import VelnoraCollection from './components/VelnoraCollection';
 import FreshDrops from './components/FreshDrops';
 import ProductDetailModal from './components/ProductDetailModal';
@@ -42,6 +43,7 @@ export default function App() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeProductId, setActiveProductId] = useState(null); // For full-page product detail routing
+  const [selectedTrend, setSelectedTrend] = useState(null);
   const [atmosphere, setAtmosphere] = useState('ivory'); // 'ivory' or 'midnight'
   const [showcaseSlideIndices, setShowcaseSlideIndices] = useState({
     Summer: 0,
@@ -106,6 +108,13 @@ export default function App() {
       document.body.classList.remove('theme-midnight');
     }
   }, [atmosphere]);
+
+  // Reset selectedTrend when category changes after loader is finished
+  useEffect(() => {
+    if (isLoaded) {
+      setSelectedTrend(null);
+    }
+  }, [selectedCategory, selectedSubCategory, isLoaded]);
 
 
 
@@ -224,6 +233,9 @@ export default function App() {
     if (params.has('article')) {
       setActiveArticle(params.get('article'));
     }
+    if (params.has('trend')) {
+      setSelectedTrend(params.get('trend'));
+    }
   }, []);
 
   // Listen for browser back/forward to update activeProductId
@@ -234,6 +246,11 @@ export default function App() {
         setActiveProductId(params.get('product'));
       } else {
         setActiveProductId(null);
+      }
+      if (params.has('trend')) {
+        setSelectedTrend(params.get('trend'));
+      } else {
+        setSelectedTrend(null);
       }
     };
     window.addEventListener('popstate', handlePopState);
@@ -291,10 +308,16 @@ export default function App() {
       } else {
         url.searchParams.delete('product');
       }
+
+      if (selectedTrend) {
+        url.searchParams.set('trend', selectedTrend);
+      } else {
+        url.searchParams.delete('trend');
+      }
     }
     
     window.history.replaceState({}, '', url.pathname + url.search);
-  }, [selectedCategory, selectedSubCategory, selectedProduct, currentView, isLoaded, activeArticle]);
+  }, [selectedCategory, selectedSubCategory, selectedProduct, currentView, isLoaded, activeArticle, selectedTrend]);
 
   // Dynamic SEO Metadata (Title & Meta Description)
   useEffect(() => {
@@ -342,6 +365,16 @@ export default function App() {
       const subLabel = selectedSubCategory !== 'All' && selectedCategory.toLowerCase() === 'sarees' ? ` ${selectedSubCategory}` : '';
       title = `Shop ${selectedCategory}${subLabel} Collection — Pure Handlooms online | The Velnora`;
       description = `Explore our exclusive ${selectedCategory}${subLabel} collection. Featuring premium ${catDesc}. Direct from master artisans with certified purity.`;
+    } else if (selectedTrend) {
+      const trendTitles = {
+        'free-spirit': 'Free Spirit',
+        'sheer-play': 'Sheer Play',
+        'coastal-coded': 'Coastal Coded',
+        'forever-chic': 'Forever chic'
+      };
+      const trendName = trendTitles[selectedTrend] || 'Collection';
+      title = `${trendName} Collection — Curated Modern Luxury | The Velnora`;
+      description = `Shop the exclusive ${trendName} trend collection at Velnora. Discover our handpicked curated designs selected for the modern lifestyle.`;
     }
 
     document.title = title;
@@ -353,7 +386,7 @@ export default function App() {
       document.head.appendChild(metaDesc);
     }
     metaDesc.setAttribute('content', description);
-  }, [selectedCategory, selectedSubCategory, selectedProduct, currentView, isLoaded, products, activeArticle]);
+  }, [selectedCategory, selectedSubCategory, selectedProduct, currentView, isLoaded, products, activeArticle, selectedTrend]);
 
   // Inject Product Schema JSON-LD dynamically
   useEffect(() => {
@@ -636,12 +669,31 @@ export default function App() {
                       allProducts={products}
                       onBack={() => {
                         setActiveProductId(null);
-                        window.history.pushState(null, '', '/');
+                        const url = new URL(window.location.href);
+                        url.searchParams.delete('product');
+                        window.history.pushState(null, '', url.pathname + url.search);
                       }}
                       onAddToCart={handleAddToCart}
                     />
                   );
                 })()
+              ) : selectedTrend ? (
+                /* TREND COLLECTION PAGE VIEW */
+                <TrendCollectionView
+                  trendSlug={selectedTrend}
+                  products={products}
+                  onBack={() => {
+                    setSelectedTrend(null);
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('trend');
+                    window.history.pushState(null, '', url.pathname + url.search);
+                  }}
+                  onProductClick={(prodId) => {
+                    window.history.pushState(null, '', `?trend=${selectedTrend}&product=${prodId}`);
+                    setActiveProductId(prodId);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                />
               ) : selectedCategory === 'All' ? (
                 /* HOMEPAGE VIEW */
                 <>
@@ -682,7 +734,14 @@ export default function App() {
                   }} />
 
                   {/* Trend Translation Section */}
-                  <TrendTranslation onSignInClick={() => setIsAuthModalOpen(true)} />
+                  <TrendTranslation 
+                    onSignInClick={() => setIsAuthModalOpen(true)} 
+                    onTrendClick={(trendSlug) => {
+                      setSelectedTrend(trendSlug);
+                      window.history.pushState(null, '', `?trend=${trendSlug}`);
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
 
                   {/* Velnora Collection Section */}
                   <VelnoraCollection 
