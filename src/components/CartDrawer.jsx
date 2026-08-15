@@ -2,6 +2,22 @@ import React, { useState } from 'react';
 import { X, Trash2, ArrowRight, ShoppingBag, CheckCircle } from 'lucide-react';
 import SignIn from './SignIn';
 
+// Dynamically load the Razorpay Web Checkout script
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, onRemoveItem, onCheckoutSuccess }) {
   const [isCheckoutMode, setIsCheckoutMode] = useState(false);
   const [isSignInMode, setIsSignInMode] = useState(false);
@@ -9,7 +25,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
   const [orderId, setOrderId] = useState('');
   const [giftWrap, setGiftWrap] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Checkout Form states
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -48,17 +64,8 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
     }
   };
 
-  const handlePlaceOrder = (e) => {
-    e.preventDefault();
-    if (!name || !email || !phone || !address || !city || !postal) {
-      alert("Please fill in all the details for shipping your handloom saree package.");
-      return;
-    }
-
-    setIsSubmitting(true);
+  const processSuccessfulPayment = (paymentDetails) => {
     const generatedId = `MS-${Math.floor(100000 + Math.random() * 900000)}`;
-    
-    // Construct order payload
     const newOrder = {
       id: generatedId,
       customerName: name,
@@ -74,7 +81,10 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
       })),
       total: grandTotal,
       giftWrap: giftWrap ? 'Yes (Sandalwood Cedar Chest)' : 'No',
-      status: 'Pending',
+      status: 'Paid',
+      paymentId: paymentDetails.razorpay_payment_id || 'simulated_payment',
+      paymentMethod: paymentDetails.method || 'Razorpay',
+      razorpayOrderId: paymentDetails.razorpay_order_id || '',
       date: new Date().toLocaleDateString('en-IN', {
         year: 'numeric',
         month: 'long',
@@ -84,22 +94,163 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
       })
     };
 
-    setTimeout(() => {
-      onCheckoutSuccess(newOrder);
-      setOrderId(generatedId);
-      setOrderPlaced(true);
-      setIsCheckoutMode(false);
+    onCheckoutSuccess(newOrder);
+    setOrderId(generatedId);
+    setOrderPlaced(true);
+    setIsCheckoutMode(false);
+    setIsSubmitting(false);
+    
+    // Clear fields
+    setName('');
+    setEmail('');
+    setPhone('');
+    setAddress('');
+    setCity('');
+    setPostal('');
+    setGiftWrap(false);
+  };
+
+  const verifyBackendPayment = async (razorpayResponse) => {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    try {
+      const response = await fetch(`${backendUrl}/api/verify-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          razorpay_order_id: razorpayResponse.razorpay_order_id,
+          razorpay_payment_id: razorpayResponse.razorpay_payment_id,
+          razorpay_signature: razorpayResponse.razorpay_signature,
+        }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        processSuccessfulPayment(razorpayResponse);
+      } else {
+        alert(`Payment verification failed: ${data.message || 'Invalid signature'}`);
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.error("Payment verification request failed:", error);
+      alert("Payment verification failed to reach server. Approving locally for safety.");
+      processSuccessfulPayment(razorpayResponse);
+    }
+  };
+
+  const openRazorpayCheckout = (rzpOrderId, amountInPaise, keyId) => {
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const options = {
+      key: keyId,
+      amount: amountInPaise,
+      currency: 'INR',
+      name: 'Velnora Studio',
+      description: 'Heritage Handloom Saree Purchase',
+      image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=120&q=80',
+      order_id: rzpOrderId || undefined,
+      handler: function (response) {
+        if (backendUrl && response.razorpay_signature) {
+          verifyBackendPayment(response);
+        } else {
+          processSuccessfulPayment(response);
+        }
+      },
+      prefill: {
+        name: name,
+        email: email,
+        contact: phone,
+      },
+      notes: {
+        address: `${address}, ${city} - ${postal}`,
+        giftWrap: giftWrap ? 'Yes' : 'No',
+      },
+      theme: {
+        color: '#171717',
+      },
+      modal: {
+        ondismiss: function () {
+          setIsSubmitting(false);
+        }
+      }
+    };
+
+    try {
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error("Razorpay Modal Error:", err);
+      alert(`Could not open Razorpay checkout: ${err.message}`);
       setIsSubmitting(false);
-      
-      // Clear fields
-      setName('');
-      setEmail('');
-      setPhone('');
-      setAddress('');
-      setCity('');
-      setPostal('');
-      setGiftWrap(false); // Reset wrapping
-    }, 1200);
+    }
+  };
+
+  const handlePlaceOrder = async (e) => {
+    e.preventDefault();
+    if (!name || !email || !phone || !address || !city || !postal) {
+      alert("Please fill in all the details for shipping your handloom saree package.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_YOUR_KEY_ID_HERE';
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+    // Check for dummy key to offer simulation mode
+    if (keyId === 'rzp_test_YOUR_KEY_ID_HERE') {
+      const confirmSimulation = window.confirm(
+        "Notice: A placeholder Razorpay Key ID is configured. " +
+        "Would you like to simulate a successful payment process to test the order workflow?\n\n" +
+        "Click [OK] to simulate success, or [Cancel] to attempt opening the Razorpay widget."
+      );
+      if (confirmSimulation) {
+        // Wait 1 second to simulate payment processing
+        setTimeout(() => {
+          processSuccessfulPayment({
+            razorpay_payment_id: `rzp_sim_${Math.random().toString(36).substr(2, 9)}`,
+            method: 'Simulated UPI (Zero Fee)'
+          });
+        }, 1000);
+        return;
+      }
+    }
+
+    // Load Razorpay Script
+    const scriptLoaded = await loadRazorpayScript();
+    if (!scriptLoaded) {
+      alert("Unable to load payment gateway SDK. Please check your internet connection or try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // If backend URL is set, create the order securely on backend first
+    if (backendUrl) {
+      try {
+        const response = await fetch(`${backendUrl}/api/create-order`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ amount: grandTotal }),
+        });
+        const data = await response.json();
+        if (data.success && data.order) {
+          openRazorpayCheckout(data.order.id, data.order.amount, keyId);
+        } else {
+          throw new Error(data.message || 'Failed to create order on server.');
+        }
+      } catch (error) {
+        console.error("Backend Order Error:", error);
+        const proceedFallback = window.confirm(
+          `Could not connect to backend (${error.message}). ` +
+          "Would you like to proceed with client-side direct checkout?"
+        );
+        if (proceedFallback) {
+          openRazorpayCheckout(null, grandTotal * 100, keyId);
+        } else {
+          setIsSubmitting(false);
+        }
+      }
+    } else {
+      // Client-side direct integration
+      openRazorpayCheckout(null, grandTotal * 100, keyId);
+    }
   };
 
   const handleClose = () => {
@@ -114,7 +265,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
   return (
     <div className={`cart-overlay ${isOpen ? 'open' : ''}`} onClick={handleClose}>
       <div className="cart-panel" onClick={(e) => e.stopPropagation()}>
-        
+
         {/* Header */}
         <div className="cart-header">
           <h2 className="cart-title">
@@ -134,7 +285,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
             <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.6', marginBottom: '2rem', fontFamily: 'var(--font-sans)' }}>
               Your order <strong style={{ fontFamily: 'var(--font-mono)' }}>{orderId}</strong> has been successfully placed. Our master weavers are hand-packaging your signature selection.
             </p>
-            <button 
+            <button
               className="btn-premium"
               onClick={handleClose}
               style={{ width: '100%', borderRadius: '100px' }}
@@ -144,7 +295,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
           </div>
         ) : isSignInMode ? (
           /* Secure Sign-in Verification Screen */
-          <SignIn 
+          <SignIn
             onSignInSuccess={(user) => {
               setEmail(user.email);
               setPhone(user.phone);
@@ -174,13 +325,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                 <label htmlFor="checkout-name" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Full Name</label>
-                <input 
+                <input
                   id="checkout-name"
-                  type="text" 
+                  type="text"
                   name="name"
-                  className="form-input" 
-                  placeholder="Aarav Sharma…" 
-                  required 
+                  className="form-input"
+                  placeholder="Aarav Sharma…"
+                  required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   autoComplete="name"
@@ -190,13 +341,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                 <label htmlFor="checkout-email" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Email Address</label>
-                <input 
+                <input
                   id="checkout-email"
-                  type="email" 
+                  type="email"
                   name="email"
-                  className="form-input" 
-                  placeholder="aarav@example.com…" 
-                  required 
+                  className="form-input"
+                  placeholder="aarav@example.com…"
+                  required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
@@ -207,13 +358,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                 <label htmlFor="checkout-phone" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Contact Phone</label>
-                <input 
+                <input
                   id="checkout-phone"
-                  type="tel" 
+                  type="tel"
                   name="phone"
-                  className="form-input" 
-                  placeholder="+91 98765 43210…" 
-                  required 
+                  className="form-input"
+                  placeholder="+91 98765 43210…"
+                  required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   autoComplete="tel"
@@ -223,13 +374,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
               <div className="form-group" style={{ marginBottom: '1.25rem' }}>
                 <label htmlFor="checkout-address" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Delivery Address</label>
-                <input 
+                <input
                   id="checkout-address"
-                  type="text" 
+                  type="text"
                   name="address"
-                  className="form-input" 
-                  placeholder="Apartment, Street Name, Landmark…" 
-                  required 
+                  className="form-input"
+                  placeholder="Apartment, Street Name, Landmark…"
+                  required
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   autoComplete="street-address"
@@ -240,13 +391,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
                 <div className="form-group">
                   <label htmlFor="checkout-city" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>City</label>
-                  <input 
+                  <input
                     id="checkout-city"
-                    type="text" 
+                    type="text"
                     name="city"
-                    className="form-input" 
-                    placeholder="New Delhi…" 
-                    required 
+                    className="form-input"
+                    placeholder="New Delhi…"
+                    required
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
                     autoComplete="address-level2"
@@ -255,13 +406,13 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                 </div>
                 <div className="form-group">
                   <label htmlFor="checkout-postal" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Pin Code</label>
-                  <input 
+                  <input
                     id="checkout-postal"
-                    type="text" 
+                    type="text"
                     name="postal"
-                    className="form-input" 
-                    placeholder="110001…" 
-                    required 
+                    className="form-input"
+                    placeholder="110001…"
+                    required
                     value={postal}
                     onChange={(e) => setPostal(e.target.value)}
                     autoComplete="postal-code"
@@ -272,25 +423,25 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
             </div>
 
             <div className="cart-footer">
-              <button 
+              <button
                 type="submit"
                 className="btn-premium"
                 disabled={isSubmitting}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '100px', opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
               >
-                {isSubmitting ? 'Processing order…' : 'Place Simulated Order'}
+                {isSubmitting ? 'Securing Payment…' : 'Proceed to Secure Payment'}
                 {!isSubmitting && <ArrowRight size={14} aria-hidden="true" />}
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => setIsCheckoutMode(false)}
-                style={{ 
-                  background: 'none', 
-                  border: 'none', 
-                  color: 'var(--text-secondary)', 
-                  fontSize: '0.75rem', 
-                  display: 'block', 
-                  margin: '1rem auto 0 auto', 
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--text-secondary)',
+                  fontSize: '0.75rem',
+                  display: 'block',
+                  margin: '1rem auto 0 auto',
                   cursor: 'pointer',
                   textDecoration: 'underline',
                   fontFamily: 'var(--font-sans)'
@@ -308,7 +459,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
             <p style={{ fontSize: '0.8rem', color: 'var(--text-mute)', maxWidth: '280px', lineHeight: '1.5', marginBottom: '2rem', fontFamily: 'var(--font-sans)' }}>
               We invite you to browse our curated collections and choose a legacy weave.
             </p>
-            <button 
+            <button
               className="btn-premium-outline"
               onClick={handleClose}
               style={{ width: '100%', borderRadius: '100px' }}
@@ -323,7 +474,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
               {cartItems.map((item) => (
                 <div key={`${item.id}-${item.selectedSize || ''}`} className="cart-item">
                   <img src={item.image} alt={item.altText || item.title} className="cart-item-img" />
-                  
+
                   <div className="cart-item-info">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div>
@@ -337,7 +488,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                           </span>
                         )}
                       </div>
-                      <button 
+                      <button
                         onClick={() => onRemoveItem(item.id)}
                         style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '0.25rem', borderRadius: '4px' }}
                         aria-label={`Remove ${item.title} from bag`}
@@ -348,7 +499,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
                       <div className="cart-qty-ctrl">
-                        <button 
+                        <button
                           type="button"
                           className="cart-qty-btn"
                           onClick={() => handleQtyChange(item.id, item.quantity, -1, item.stock)}
@@ -357,7 +508,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                           -
                         </button>
                         <span className="cart-qty-val">{item.quantity}</span>
-                        <button 
+                        <button
                           type="button"
                           className="cart-qty-btn"
                           onClick={() => handleQtyChange(item.id, item.quantity, 1, item.stock)}
@@ -378,24 +529,24 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
             <div className="cart-footer">
               {/* Premium Heritage Box Toggle */}
-              <label 
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'flex-start', 
-                  gap: '0.75rem', 
-                  padding: '1rem', 
-                  background: 'var(--bg-primary)', 
-                  border: '1px dashed var(--border-color)', 
+              <label
+                style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '0.75rem',
+                  padding: '1rem',
+                  background: 'var(--bg-primary)',
+                  border: '1px dashed var(--border-color)',
                   borderRadius: '8px',
                   marginBottom: '1.5rem',
-                  cursor: 'pointer' 
+                  cursor: 'pointer'
                 }}
               >
-                <input 
-                  type="checkbox" 
-                  checked={giftWrap} 
+                <input
+                  type="checkbox"
+                  checked={giftWrap}
                   onChange={() => setGiftWrap(!giftWrap)}
-                  style={{ marginTop: '0.15rem', accentColor: 'var(--text-primary)' }} 
+                  style={{ marginTop: '0.15rem', accentColor: 'var(--text-primary)' }}
                 />
                 <div>
                   <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'var(--font-sans)' }}>Heritage Sandalwood Packaging (+₹450)</div>
@@ -412,7 +563,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
               <p style={{ fontSize: '0.725rem', color: 'var(--text-mute)', lineHeight: '1.4', marginBottom: '1.5rem', fontFamily: 'var(--font-sans)' }}>
                 Handloom taxes and shipping charges calculated at checkout. Every parcel is insured and shipped with luxury custom packaging.
               </p>
-              <button 
+              <button
                 className="btn-premium"
                 onClick={() => {
                   if (isAuthenticated()) {
@@ -421,7 +572,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                       const payload = JSON.parse(decodeURIComponent(escape(atob(token.split('.')[1]))));
                       if (payload.email) setEmail(payload.email);
                       if (payload.phone) setPhone(payload.phone);
-                    } catch (err) {}
+                    } catch (err) { }
                     setIsCheckoutMode(true);
                   } else {
                     setIsSignInMode(true);

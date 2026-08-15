@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { 
-  LayoutDashboard, 
-  ShoppingBag, 
-  CreditCard, 
-  MessageSquare, 
-  LogOut, 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Check, 
+import {
+  LayoutDashboard,
+  ShoppingBag,
+  CreditCard,
+  MessageSquare,
+  LogOut,
+  Plus,
+  Edit,
+  Trash2,
+  Check,
   X,
   DollarSign,
   TrendingUp,
@@ -27,16 +27,16 @@ const AVAILABLE_IMAGES = [
   { name: 'Crepe Silk Co-ord', url: 'images/coord_set.webp' }
 ];
 
-export default function AdminDashboard({ 
-  products, 
-  orders, 
-  inquiries, 
-  onLogout, 
-  onAddProduct, 
-  onEditProduct, 
-  onDeleteProduct, 
+export default function AdminDashboard({
+  products,
+  orders,
+  inquiries,
+  onLogout,
+  onAddProduct,
+  onEditProduct,
+  onDeleteProduct,
   onUpdateOrderStatus,
-  onDeleteInquiry 
+  onDeleteInquiry
 }) {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -104,7 +104,7 @@ export default function AdminDashboard({
     setMaterial(product.material || '');
     setZari(product.zari || '');
     setCare(product.care || '');
-    
+
     // Check if image is in our preset
     const isPreset = AVAILABLE_IMAGES.some(img => img.url === product.image);
     if (isPreset) {
@@ -170,7 +170,7 @@ export default function AdminDashboard({
         </div>
 
         <div role="tablist" aria-label="Admin Navigation" className="admin-sidebar-menu">
-          <button 
+          <button
             role="tab"
             aria-selected={activeTab === 'dashboard'}
             className={`admin-menu-item ${activeTab === 'dashboard' ? 'active' : ''}`}
@@ -179,8 +179,8 @@ export default function AdminDashboard({
             <LayoutDashboard size={16} aria-hidden="true" />
             Dashboard
           </button>
-          
-          <button 
+
+          <button
             role="tab"
             aria-selected={activeTab === 'products'}
             className={`admin-menu-item ${activeTab === 'products' ? 'active' : ''}`}
@@ -189,8 +189,8 @@ export default function AdminDashboard({
             <ShoppingBag size={16} aria-hidden="true" />
             Products ({products.length})
           </button>
-          
-          <button 
+
+          <button
             role="tab"
             aria-selected={activeTab === 'orders'}
             className={`admin-menu-item ${activeTab === 'orders' ? 'active' : ''}`}
@@ -200,7 +200,7 @@ export default function AdminDashboard({
             Orders ({orders.length})
           </button>
 
-          <button 
+          <button
             role="tab"
             aria-selected={activeTab === 'inquiries'}
             className={`admin-menu-item ${activeTab === 'inquiries' ? 'active' : ''}`}
@@ -236,7 +236,7 @@ export default function AdminDashboard({
         </header>
 
         <div className="admin-content">
-          
+
           {/* TAB 1: DASHBOARD STATS OVERVIEW */}
           {activeTab === 'dashboard' && (
             <>
@@ -285,11 +285,11 @@ export default function AdminDashboard({
 
               {/* Low stock notice or minor alerts */}
               {lowStockCount > 0 && (
-                <div 
-                  style={{ 
-                    backgroundColor: '#FFF8E1', 
-                    color: '#B78103', 
-                    border: '1px solid #FFE082', 
+                <div
+                  style={{
+                    backgroundColor: '#FFF8E1',
+                    color: '#B78103',
+                    border: '1px solid #FFE082',
                     padding: '1.25rem 2rem',
                     borderRadius: '4px',
                     marginBottom: '2.5rem',
@@ -302,7 +302,7 @@ export default function AdminDashboard({
                   <div>
                     <strong>Inventory Notice:</strong> {lowStockCount} saree design{lowStockCount > 1 ? 's are' : ' is'} running low on stock (3 or fewer items remaining). Please review and restock catalog designs.
                   </div>
-                  <button 
+                  <button
                     className="btn-premium"
                     onClick={() => setActiveTab('products')}
                     style={{ padding: '0.5rem 1rem', fontSize: '0.65rem', background: '#B78103', borderColor: '#B78103' }}
@@ -353,10 +353,10 @@ export default function AdminDashboard({
 
                 <div>
                   <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', fontWeight: 600 }}>Recent Inquiries</h3>
-                  <div 
-                    style={{ 
-                      background: '#FFFFFF', 
-                      border: '1px solid var(--border-color)', 
+                  <div
+                    style={{
+                      background: '#FFFFFF',
+                      border: '1px solid var(--border-color)',
                       padding: '1.5rem',
                       borderRadius: '4px',
                       display: 'flex',
@@ -384,7 +384,7 @@ export default function AdminDashboard({
                       </div>
                     )}
                     {inquiries.length > 0 && (
-                      <button 
+                      <button
                         onClick={() => setActiveTab('inquiries')}
                         style={{ background: 'none', border: 'none', color: 'var(--accent-gold-dark)', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', textAlign: 'left', marginTop: '0.5rem', textDecoration: 'underline' }}
                       >
@@ -428,10 +428,10 @@ export default function AdminDashboard({
                     {products.map(product => (
                       <tr key={product.id}>
                         <td>
-                          <img 
-                            src={product.image} 
-                            alt={product.title} 
-                            style={{ width: '48px', height: '48px', objectFit: 'cover', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }} 
+                          <img
+                            src={product.image}
+                            alt={product.title}
+                            style={{ width: '48px', height: '48px', objectFit: 'cover', background: 'var(--bg-secondary)', border: '1px solid var(--border-color)' }}
                           />
                         </td>
                         <td style={{ fontWeight: 600 }}>{product.title}</td>
@@ -454,7 +454,7 @@ export default function AdminDashboard({
                         </td>
                         <td style={{ textAlign: 'right' }}>
                           <div style={{ display: 'inline-flex', gap: '0.75rem' }}>
-                            <button 
+                            <button
                               onClick={() => handleOpenEditForm(product)}
                               style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
                               onMouseOver={(e) => e.currentTarget.style.color = 'var(--accent-gold-dark)'}
@@ -463,7 +463,7 @@ export default function AdminDashboard({
                             >
                               <Edit size={16} />
                             </button>
-                            <button 
+                            <button
                               onClick={() => handleDeleteProduct(product.id)}
                               style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
                               onMouseOver={(e) => e.currentTarget.style.color = '#C62828'}
@@ -530,7 +530,7 @@ export default function AdminDashboard({
                         </td>
                         <td style={{ textAlign: 'right' }}>
                           {order.status !== 'Delivered' && (
-                            <select 
+                            <select
                               className="admin-select"
                               style={{ width: '120px', padding: '0.4rem 0.8rem', fontSize: '0.7rem', backgroundPosition: 'right 0.5rem center' }}
                               value={order.status}
@@ -590,7 +590,7 @@ export default function AdminDashboard({
                         <td style={{ color: 'var(--accent-gold-dark)', fontWeight: 600 }}>{inq.subject}</td>
                         <td style={{ fontSize: '0.75rem', lineHeight: '1.4', color: 'var(--text-secondary)' }}>{inq.message}</td>
                         <td style={{ textAlign: 'right' }}>
-                          <button 
+                          <button
                             onClick={() => onDeleteInquiry(inq.id)}
                             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}
                             onMouseOver={(e) => e.currentTarget.style.color = '#C62828'}
@@ -624,7 +624,7 @@ export default function AdminDashboard({
           <h3 style={{ fontFamily: 'var(--font-sans)', fontSize: '1.5rem', fontWeight: 600, letterSpacing: '-0.02em' }}>
             {editingProduct ? 'Modify Saree Specifications' : 'Introduce Saree Design'}
           </h3>
-          <button 
+          <button
             onClick={() => setIsFormOpen(false)}
             style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             aria-label="Close form drawer"
@@ -635,15 +635,15 @@ export default function AdminDashboard({
 
         <form onSubmit={handleFormSubmit} style={{ display: 'flex', flexDirection: 'column', height: 'calc(100% - 70px)' }}>
           <div className="admin-panel-slider-body">
-            
+
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="product-title" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Saree Title *</label>
-              <input 
+              <input
                 id="product-title"
-                type="text" 
+                type="text"
                 name="title"
-                className="form-input" 
-                placeholder="E.g., Regal Crimson Temple…" 
+                className="form-input"
+                placeholder="E.g., Regal Crimson Temple…"
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -654,7 +654,7 @@ export default function AdminDashboard({
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.25rem' }}>
               <div className="form-group">
                 <label htmlFor="product-category" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Category / Heritage Type</label>
-                <select 
+                <select
                   id="product-category"
                   name="category"
                   className="admin-select"
@@ -673,7 +673,7 @@ export default function AdminDashboard({
                 {category.toLowerCase() === 'sarees' && (
                   <div style={{ marginTop: '1rem' }}>
                     <label htmlFor="product-subcategory" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Saree Type (Subcategory)</label>
-                    <select 
+                    <select
                       id="product-subcategory"
                       name="subcategory"
                       className="admin-select"
@@ -693,12 +693,12 @@ export default function AdminDashboard({
 
               <div className="form-group">
                 <label htmlFor="product-price" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Price (₹ INR) *</label>
-                <input 
+                <input
                   id="product-price"
-                  type="number" 
+                  type="number"
                   name="price"
-                  className="form-input" 
-                  placeholder="24500…" 
+                  className="form-input"
+                  placeholder="24500…"
                   required
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
@@ -709,12 +709,12 @@ export default function AdminDashboard({
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="product-stock" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Initial Stock Count *</label>
-              <input 
+              <input
                 id="product-stock"
-                type="number" 
+                type="number"
                 name="stock"
-                className="form-input" 
-                placeholder="5…" 
+                className="form-input"
+                placeholder="5…"
                 required
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
@@ -727,8 +727,8 @@ export default function AdminDashboard({
               <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
                 {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((sz) => (
                   <label key={sz} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', color: 'var(--text-primary)' }}>
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       checked={sizes.includes(sz)}
                       onChange={(e) => {
                         if (e.target.checked) {
@@ -747,12 +747,12 @@ export default function AdminDashboard({
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="product-material" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Material Details</label>
-              <input 
+              <input
                 id="product-material"
-                type="text" 
+                type="text"
                 name="material"
-                className="form-input" 
-                placeholder="E.g., 100% Pure Mulberry Silk…" 
+                className="form-input"
+                placeholder="E.g., 100% Pure Mulberry Silk…"
                 value={material}
                 onChange={(e) => setMaterial(e.target.value)}
                 style={{ width: '100%', padding: '0px 12px', height: '40px', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.875rem', outline: 'none' }}
@@ -761,12 +761,12 @@ export default function AdminDashboard({
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="product-zari" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Zari/Embroidery Details</label>
-              <input 
+              <input
                 id="product-zari"
-                type="text" 
+                type="text"
                 name="zari"
-                className="form-input" 
-                placeholder="E.g., Pure Gold & Silver Kalabattu threads…" 
+                className="form-input"
+                placeholder="E.g., Pure Gold & Silver Kalabattu threads…"
                 value={zari}
                 onChange={(e) => setZari(e.target.value)}
                 style={{ width: '100%', padding: '0px 12px', height: '40px', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.875rem', outline: 'none' }}
@@ -775,12 +775,12 @@ export default function AdminDashboard({
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="product-care" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Care Instructions</label>
-              <input 
+              <input
                 id="product-care"
-                type="text" 
+                type="text"
                 name="care"
-                className="form-input" 
-                placeholder="E.g., Dry Clean Only. Avoid direct sprays.…" 
+                className="form-input"
+                placeholder="E.g., Dry Clean Only. Avoid direct sprays.…"
                 value={care}
                 onChange={(e) => setCare(e.target.value)}
                 style={{ width: '100%', padding: '0px 12px', height: '40px', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.875rem', outline: 'none' }}
@@ -789,11 +789,11 @@ export default function AdminDashboard({
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
               <label htmlFor="product-description" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Description & Heritage Summary</label>
-              <textarea 
+              <textarea
                 id="product-description"
                 name="description"
-                className="form-input" 
-                rows="4" 
+                className="form-input"
+                rows="4"
                 placeholder="Describe the weaving technique, color significance, and aesthetic allure..."
                 style={{ resize: 'vertical', width: '100%', padding: '8px 12px', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.875rem', outline: 'none' }}
                 value={description}
@@ -807,11 +807,11 @@ export default function AdminDashboard({
               <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>
                 Choose one of our premium high-resolution studio saree photos
               </span>
-              
+
               <div className="admin-img-selector" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.25rem' }}>
                 {AVAILABLE_IMAGES.map((img, idx) => (
-                  <button 
-                    key={idx} 
+                  <button
+                    key={idx}
                     type="button"
                     className={`img-selector-option ${selectedImage === img.url ? 'selected' : ''}`}
                     onClick={() => {
@@ -829,27 +829,27 @@ export default function AdminDashboard({
 
               <div style={{ marginTop: '1.25rem', padding: '1rem', border: '1px dashed var(--border-color)', background: 'var(--bg-primary)', borderRadius: '8px' }}>
                 <label htmlFor="product-image-file" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Or Upload Custom Saree Image File</label>
-                <input 
+                <input
                   id="product-image-file"
-                  type="file" 
+                  type="file"
                   name="image_file"
                   accept="image/*"
                   onChange={handleImageUpload}
-                  style={{ 
-                    fontFamily: 'var(--font-sans)', 
-                    fontSize: '0.75rem', 
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: '0.75rem',
                     color: 'var(--text-secondary)',
                     marginTop: '0.25rem',
                     width: '100%',
                     cursor: 'pointer'
-                  }} 
+                  }}
                 />
                 {uploadedImage && (
                   <div style={{ marginTop: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <img 
-                      src={uploadedImage} 
-                      alt="Uploaded preview" 
-                      style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border-color)' }} 
+                    <img
+                      src={uploadedImage}
+                      alt="Uploaded preview"
+                      style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px', border: '1px solid var(--border-color)' }}
                     />
                     <span style={{ fontSize: '0.7rem', color: '#43A047', fontWeight: 600 }}>✓ Ready to Save</span>
                   </div>
@@ -858,12 +858,12 @@ export default function AdminDashboard({
 
               <div style={{ marginTop: '1rem' }}>
                 <label htmlFor="product-image-url" className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Or Provide Custom Saree Image URL</label>
-                <input 
+                <input
                   id="product-image-url"
-                  type="url" 
+                  type="url"
                   name="image_url"
-                  className="form-input" 
-                  placeholder="https://images.unsplash.com/... or similar" 
+                  className="form-input"
+                  placeholder="https://images.unsplash.com/... or similar"
                   value={customImageUrl}
                   onChange={(e) => {
                     setCustomImageUrl(e.target.value);
@@ -878,16 +878,16 @@ export default function AdminDashboard({
           </div>
 
           <div className="admin-panel-slider-footer">
-            <button 
-              type="button" 
-              className="btn-premium-outline" 
+            <button
+              type="button"
+              className="btn-premium-outline"
               onClick={() => setIsFormOpen(false)}
               style={{ padding: '0.75rem 1.5rem', borderRadius: '100px' }}
             >
               Cancel
             </button>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="btn-premium"
               style={{ padding: '0.75rem 1.5rem', borderRadius: '100px' }}
             >
