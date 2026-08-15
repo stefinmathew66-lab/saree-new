@@ -612,32 +612,6 @@ export default function App() {
               {selectedCategory === 'All' ? (
                 /* HOMEPAGE VIEW */
                 <>
-                  {/* Category Circles Row */}
-                  <div className="category-circles-container">
-                    <div className="category-circles-grid">
-                      {[
-                        { name: 'Summer', label: 'Summer Collection', img: 'images/summer_dress.webp' },
-                        { name: 'Sarees', label: 'Heritage Sarees', img: 'images/silk_kanchipuram.webp' },
-                        { name: 'Suits', label: 'Ethnic Suits', img: 'images/suit_anarkali.webp' },
-                        { name: 'Co-ords', label: 'Co-ord Sets', img: 'images/coord_set.webp' },
-                      ].map((cat) => (
-                        <div 
-                          key={cat.name} 
-                          className={`category-circle-card ${selectedCategory === cat.name ? 'active' : ''}`}
-                          onClick={() => {
-                            setSelectedCategory(cat.name);
-                            setSelectedSubCategory('All');
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                          }}
-                        >
-                          <div className="circle-image-frame">
-                            <img src={cat.img} alt={cat.label} />
-                          </div>
-                          <span className="circle-label">{cat.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
 
                   {/* Hero Banner Section */}
                   <Hero onExploreClick={() => { setSelectedCategory('Sarees'); setSelectedSubCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
