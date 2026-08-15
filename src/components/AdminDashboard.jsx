@@ -667,6 +667,7 @@ export default function AdminDashboard({
                   <option value="Suits">Suits</option>
                   <option value="Co-ords">Co-ords</option>
                   <option value="Velnora">Velnora Collection</option>
+                  <option value="Fresh">Fresh Drops Collection</option>
                 </select>
 
                 {category.toLowerCase() === 'sarees' && (

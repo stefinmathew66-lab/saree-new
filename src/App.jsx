@@ -12,6 +12,7 @@ import ProductCard from './components/ProductCard';
 import ProductDetailView from './components/ProductDetailView';
 import TrendTranslation from './components/TrendTranslation';
 import VelnoraCollection from './components/VelnoraCollection';
+import FreshDrops from './components/FreshDrops';
 import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
 import AdminLogin from './components/AdminLogin';
@@ -127,17 +128,34 @@ export default function App() {
     // Check if the cache contains the new Velnora collection category items
     const hasVelnoraProducts = parsedProducts.length > 0 && parsedProducts.some(p => p.category === 'Velnora');
 
+    // Check if the cache contains the new Fresh drops category items
+    const hasFreshProducts = parsedProducts.length > 0 && parsedProducts.some(p => p.category === 'Fresh');
+
     if (!storedProducts || hasOldCategories || hasAbsolutePaths) {
       localStorage.setItem('velnora_products', JSON.stringify(defaultProducts));
       setProducts(defaultProducts);
-    } else if (!hasVelnoraProducts) {
-      // Append default Velnora products to the existing cache list
-      const defaultVelnoraItems = defaultProducts.filter(p => p.category === 'Velnora');
-      const mergedProducts = [...parsedProducts, ...defaultVelnoraItems];
-      localStorage.setItem('velnora_products', JSON.stringify(mergedProducts));
-      setProducts(mergedProducts);
     } else {
-      setProducts(parsedProducts);
+      let mergedProducts = [...parsedProducts];
+      let needsUpdate = false;
+
+      if (!hasVelnoraProducts) {
+        const defaultVelnoraItems = defaultProducts.filter(p => p.category === 'Velnora');
+        mergedProducts = [...mergedProducts, ...defaultVelnoraItems];
+        needsUpdate = true;
+      }
+      
+      if (!hasFreshProducts) {
+        const defaultFreshItems = defaultProducts.filter(p => p.category === 'Fresh');
+        mergedProducts = [...mergedProducts, ...defaultFreshItems];
+        needsUpdate = true;
+      }
+
+      if (needsUpdate) {
+        localStorage.setItem('velnora_products', JSON.stringify(mergedProducts));
+        setProducts(mergedProducts);
+      } else {
+        setProducts(parsedProducts);
+      }
     }
 
     // 2. Load Cart
@@ -186,7 +204,7 @@ export default function App() {
     // 5. Deep Linking checking from URL params on load
     if (params.has('category')) {
       const categoryParam = params.get('category');
-      const validCategories = ['Summer', 'Sarees', 'Suits', 'Co-ords', 'Velnora', 'All'];
+      const validCategories = ['Summer', 'Sarees', 'Suits', 'Co-ords', 'Velnora', 'Fresh', 'All'];
       const matched = validCategories.find(c => c.toLowerCase() === categoryParam.toLowerCase());
       if (matched) {
         setSelectedCategory(matched);
@@ -714,6 +732,20 @@ export default function App() {
                     }} 
                     onBannerClick={() => {
                       setSelectedCategory('Velnora');
+                      setSelectedSubCategory('All');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                  />
+
+                  {/* Fresh Drops Section */}
+                  <FreshDrops 
+                    products={products} 
+                    onProductClick={(p) => {
+                      window.history.pushState(null, '', `?product=${p.id}`);
+                      setActiveProductId(p.id);
+                    }} 
+                    onBannerClick={() => {
+                      setSelectedCategory('Fresh');
                       setSelectedSubCategory('All');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}

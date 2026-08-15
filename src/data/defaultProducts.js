@@ -335,5 +335,59 @@ export const defaultProducts = [
         images: []
       }
     ]
+  },
+  {
+    id: "prod-12",
+    title: "Classic Ivory Linen Blouse",
+    category: "Fresh",
+    price: 390,
+    description: "A breezy organic linen top styled for warm days and effortless resort luxury. Highly breathable fabric.",
+    material: "105% Pure Linen",
+    zari: "None",
+    care: "Gentle machine wash.",
+    stock: 15,
+    image: "images/linen_beige.webp",
+    detailImage: "images/linen_beige.webp",
+    altText: "Ivory linen blouse top",
+    detailAltText: "Ivory linen texture detail",
+    featured: true,
+    sizes: ["XS", "S", "M", "L"],
+    reviews: []
+  },
+  {
+    id: "prod-13",
+    title: "Minimalist Slip Dress",
+    category: "Fresh",
+    price: 540,
+    description: "An effortless slip dress silhouette made for weekend lounging and daily chic outings.",
+    material: "Viscose Cotton Blend",
+    zari: "None",
+    care: "Gentle wash.",
+    stock: 9,
+    image: "images/summer_dress.webp",
+    detailImage: "images/summer_dress.webp",
+    altText: "White slip dress",
+    detailAltText: "White dress close up",
+    featured: true,
+    sizes: ["S", "M", "L"],
+    reviews: []
+  },
+  {
+    id: "prod-14",
+    title: "Mulberry Silk Crepe Top",
+    category: "Fresh",
+    price: 680,
+    description: "A high-fashion luxury printed silk top with short sleeves and regular collar cut.",
+    material: "Mulberry Silk Crepe",
+    zari: "None",
+    care: "Dry clean only.",
+    stock: 5,
+    image: "images/coord_set.webp",
+    detailImage: "images/coord_set.webp",
+    altText: "Printed silk Crepe top",
+    detailAltText: "Close up of printed Crepe silk",
+    featured: true,
+    sizes: ["S", "M", "L"],
+    reviews: []
   }
 ];
