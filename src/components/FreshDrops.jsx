@@ -79,9 +79,17 @@ export default function FreshDrops({ products, onProductClick, onBannerClick }) 
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
-          maxWidth: '60%'
+          maxWidth: '60%',
+          textShadow: '0 1px 4px rgba(0,0,0,0.6)'
         }}>
-          <h2 style={{ fontSize: '2rem', fontWeight: '850', margin: '0 0 0.35rem 0', fontFamily: 'var(--font-sans)', lineHeight: '1.1' }}>
+          <h2 style={{ 
+            fontSize: '2rem', 
+            fontWeight: '850', 
+            margin: '0 0 0.35rem 0', 
+            fontFamily: 'var(--font-sans)', 
+            lineHeight: '1.1',
+            color: '#ffb200'
+          }}>
             Fresh drops
           </h2>
           <span style={{ fontSize: '0.82rem', fontWeight: '500', opacity: 0.95, marginBottom: '1.25rem', lineHeight: '1.3' }}>
