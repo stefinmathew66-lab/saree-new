@@ -124,9 +124,18 @@ export default function App() {
     // Check if the cache contains absolute paths starting with /images/
     const hasAbsolutePaths = parsedProducts.length > 0 && parsedProducts.some(p => p.image && p.image.startsWith('/images/'));
 
+    // Check if the cache contains the new Velnora collection category items
+    const hasVelnoraProducts = parsedProducts.length > 0 && parsedProducts.some(p => p.category === 'Velnora');
+
     if (!storedProducts || hasOldCategories || hasAbsolutePaths) {
       localStorage.setItem('velnora_products', JSON.stringify(defaultProducts));
       setProducts(defaultProducts);
+    } else if (!hasVelnoraProducts) {
+      // Append default Velnora products to the existing cache list
+      const defaultVelnoraItems = defaultProducts.filter(p => p.category === 'Velnora');
+      const mergedProducts = [...parsedProducts, ...defaultVelnoraItems];
+      localStorage.setItem('velnora_products', JSON.stringify(mergedProducts));
+      setProducts(mergedProducts);
     } else {
       setProducts(parsedProducts);
     }
@@ -703,6 +712,11 @@ export default function App() {
                       window.history.pushState(null, '', `?product=${p.id}`);
                       setActiveProductId(p.id);
                     }} 
+                    onBannerClick={() => {
+                      setSelectedCategory('Velnora');
+                      setSelectedSubCategory('All');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
                   />
 
                   {/* Category Banners Showcase (Examples of each category on main page) */}

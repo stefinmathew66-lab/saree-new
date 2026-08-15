@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function VelnoraCollection({ products, onProductClick }) {
+export default function VelnoraCollection({ products, onProductClick, onBannerClick }) {
   // Filter products by category 'Velnora'
   const velnoraProducts = products.filter(p => p.category === 'Velnora');
 
@@ -25,16 +25,22 @@ export default function VelnoraCollection({ products, onProductClick }) {
         VELNORA COLLECTION
       </h2>
 
-      {/* Main Campaign Banner */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        aspectRatio: '16/9',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        marginBottom: '1.5rem',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
-      }}>
+      {/* Main Campaign Banner (Clickable) */}
+      <div 
+        onClick={onBannerClick}
+        style={{
+          position: 'relative',
+          width: '100%',
+          aspectRatio: '16/9',
+          borderRadius: '12px',
+          overflow: 'hidden',
+          marginBottom: '1.5rem',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+          cursor: 'pointer',
+          transition: 'transform 0.2s ease'
+        }}
+        className="campaign-banner-hover"
+      >
         <img 
           src="/velnora_collection_banner.jpg" 
           alt="Velnora Collection Campaign" 
