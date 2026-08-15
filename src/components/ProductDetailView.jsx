@@ -17,13 +17,13 @@ import {
   PenLine
 } from 'lucide-react';
 
-export default function ProductDetailView({ product, onBack, onAddToCart, allProducts }) {
+export default function ProductDetailView({ product, onBack, onAddToCart, allProducts, wishlist = [], onToggleWishlist }) {
   const { toast } = useNotification();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [isAboutOpen, setIsAboutOpen] = useState(true);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const isWishlisted = wishlist.includes(product?.id);
   const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
   const [reviewRating, setReviewRating] = useState(0);
   const [reviewHoverRating, setReviewHoverRating] = useState(0);
@@ -396,7 +396,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
           <div style={{ display: 'flex', gap: '0.75rem', marginTop: '2rem', marginBottom: '2rem' }}>
             {/* Wishlist Heart Toggle */}
             <button
-              onClick={() => setIsWishlisted(!isWishlisted)}
+              onClick={() => onToggleWishlist && onToggleWishlist(product.id)}
               style={{
                 width: '46px',
                 height: '46px',

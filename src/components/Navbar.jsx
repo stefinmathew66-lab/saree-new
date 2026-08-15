@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNotification } from './NotificationProvider';
 import { ShoppingBag, User, Menu, X, Search, Heart, RotateCcw, Zap, Truck } from 'lucide-react';
+import './SearchOverlay.css';
 
 export default function Navbar({ 
   cartCount, 
@@ -10,11 +11,26 @@ export default function Navbar({
   atmosphere, 
   onAtmosphereToggle,
   selectedCategory,
-  onCategoryChange
+  onCategoryChange,
+  products = [],
+  onProductClick,
+  onWishlistClick,
+  wishlistCount = 0
 }) {
   const { toast } = useNotification();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredSuggestions = searchQuery.trim()
+    ? (products || []).filter(p => 
+        p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (p.subcategory && p.subcategory.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (p.material && p.material.toLowerCase().includes(searchQuery.toLowerCase()))
+      ).slice(0, 5)
+    : [];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,8 +71,69 @@ export default function Navbar({
   return (
     <>
       <nav className="navbar-glass">
-        {/* Row 1: Logo & Icons */}
-        <div className="nav-row-main container">
+        {isSearchOpen ? (
+          <div className="search-overlay-bar">
+            <div className="search-form">
+              <Search size={20} className="search-input-icon" />
+              <input 
+                type="text" 
+                className="search-field-input" 
+                placeholder="Search our heritage handlooms, linen apparel, and custom prints..." 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+              />
+              <button 
+                type="button" 
+                className="search-close-btn" 
+                onClick={() => {
+                  setIsSearchOpen(false);
+                  setSearchQuery('');
+                }}
+                aria-label="Close search"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            
+            {/* Live Search Suggestions Dropdown */}
+            {searchQuery.trim() && (
+              <div className="search-suggestions-dropdown">
+                <div className="suggestions-heading">Search Suggestions</div>
+                {filteredSuggestions.length === 0 ? (
+                  <div className="suggestions-empty">No products found for "{searchQuery}"</div>
+                ) : (
+                  <div className="suggestions-list">
+                    {filteredSuggestions.map((prod) => (
+                      <div 
+                        key={prod.id} 
+                        className="suggestion-row-card"
+                        onClick={() => {
+                          onProductClick(prod.id);
+                          setIsSearchOpen(false);
+                          setSearchQuery('');
+                        }}
+                      >
+                        <div className="suggestion-thumb-wrapper">
+                          <img src={prod.image} alt={prod.title} className="suggestion-thumb" />
+                        </div>
+                        <div className="suggestion-info">
+                          <h4 className="suggestion-title">{prod.title}</h4>
+                          <div className="suggestion-meta-details">
+                            <span className="suggestion-category">{prod.category}</span>
+                            <span className="suggestion-price">₹{prod.price.toLocaleString('en-IN')}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          /* Row 1: Logo & Icons */
+          <div className="nav-row-main container">
           {/* Left Side: Mobile Toggle & Search */}
           <div className="nav-col-left" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             {(currentView === 'storefront' || currentView === 'journal') && (
@@ -91,7 +168,7 @@ export default function Navbar({
                 padding: '0.25rem'
               }}
               aria-label="Search"
-              onClick={() => toast.info("Search functionality is under development")}
+              onClick={() => setIsSearchOpen(true)}
             >
               <Search size={20} strokeWidth={1.5} aria-hidden="true" />
             </button>
@@ -190,12 +267,33 @@ export default function Navbar({
                 display: 'flex',
                 alignItems: 'center',
                 color: 'var(--text-primary)',
-                padding: '0.25rem'
+                padding: '0.25rem',
+                position: 'relative'
               }}
               aria-label="Wishlist"
-              onClick={() => toast.info("Wishlist is under development")}
+              onClick={onWishlistClick}
             >
               <Heart size={20} strokeWidth={1.5} aria-hidden="true" />
+              {wishlistCount > 0 && (
+                <span style={{
+                  position: 'absolute',
+                  top: '-2px',
+                  right: '-2px',
+                  background: 'var(--accent-gold)',
+                  color: 'var(--bg-primary)',
+                  fontSize: '0.55rem',
+                  fontWeight: '700',
+                  borderRadius: '50%',
+                  width: '14px',
+                  height: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontFamily: 'var(--font-sans)'
+                }}>
+                  {wishlistCount}
+                </span>
+              )}
             </button>
 
             {(currentView === 'storefront' || currentView === 'journal') && (
@@ -242,6 +340,7 @@ export default function Navbar({
             )}
           </div>
         </div>
+        )}
 
         {/* Row 2: Features/Benefits (as seen in screenshot) */}
         <div className="benefits-row" style={{

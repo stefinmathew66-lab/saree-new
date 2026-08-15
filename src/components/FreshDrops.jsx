@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
 import { Heart, Star } from 'lucide-react';
 
-export default function FreshDrops({ products, onProductClick, onBannerClick }) {
+export default function FreshDrops({ products, onProductClick, onBannerClick, wishlistedIds = [], onToggleWishlist }) {
   const [activeTab, setActiveTab] = useState('foryou'); // 'foryou' or 'newin'
-  const [wishlistedIds, setWishlistedIds] = useState([]);
 
   // Toggle wishlist item
   const toggleWishlist = (e, productId) => {
     e.stopPropagation();
-    if (wishlistedIds.includes(productId)) {
-      setWishlistedIds(wishlistedIds.filter(id => id !== productId));
-    } else {
-      setWishlistedIds([...wishlistedIds, productId]);
+    if (onToggleWishlist) {
+      onToggleWishlist(productId);
     }
   };
 

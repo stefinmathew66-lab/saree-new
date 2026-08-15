@@ -23,6 +23,7 @@ import PromoPopup from './components/PromoPopup';
 import FloatingContact from './components/FloatingContact';
 import { blogArticles } from './data/blogArticles';
 import BlogJournal from './components/BlogJournal';
+import WishlistDrawer from './components/WishlistDrawer';
 
 export default function App() {
   const { toast, alert: showAlert } = useNotification();
@@ -36,6 +37,17 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [orders, setOrders] = useState([]);
   const [inquiries, setInquiries] = useState([]);
+  
+  // Wishlist State (linked to localStorage)
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      const saved = localStorage.getItem('velnora_wishlist');
+      return saved ? JSON.parse(saved) : [];
+    } catch (e) {
+      return [];
+    }
+  });
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
 
   // UI Interactive States
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -603,6 +615,22 @@ export default function App() {
     localStorage.setItem('velnora_inquiries', JSON.stringify(updatedList));
   };
 
+  const handleToggleWishlist = (productId) => {
+    let newWishlist;
+    const targetProduct = products.find(p => p.id === productId);
+    const title = targetProduct ? targetProduct.title : "Item";
+    
+    if (wishlist.includes(productId)) {
+      newWishlist = wishlist.filter(id => id !== productId);
+      toast.success(`${title} removed from wishlist.`);
+    } else {
+      newWishlist = [...wishlist, productId];
+      toast.success(`${title} added to wishlist.`);
+    }
+    setWishlist(newWishlist);
+    localStorage.setItem('velnora_wishlist', JSON.stringify(newWishlist));
+  };
+
   // Filter products by selected tab
   const filteredProducts = products.filter((p) => {
     const matchesCategory = selectedCategory === 'All' || p.category.toLowerCase() === selectedCategory.toLowerCase();
@@ -643,6 +671,14 @@ export default function App() {
                 setSelectedCategory(cat);
                 setSelectedSubCategory('All');
               }}
+              products={products}
+              onProductClick={(id) => {
+                window.history.pushState(null, '', `?product=${id}`);
+                setActiveProductId(id);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onWishlistClick={() => setIsWishlistOpen(true)}
+              wishlistCount={wishlist.length}
             />
           </header>
 
@@ -674,6 +710,8 @@ export default function App() {
                         window.history.pushState(null, '', url.pathname + url.search);
                       }}
                       onAddToCart={handleAddToCart}
+                      wishlist={wishlist}
+                      onToggleWishlist={handleToggleWishlist}
                     />
                   );
                 })()
@@ -769,6 +807,8 @@ export default function App() {
                       setSelectedSubCategory('All');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
+                    wishlistedIds={wishlist}
+                    onToggleWishlist={handleToggleWishlist}
                   />
 
                   {/* Category Banners Showcase (Examples of each category on main page) */}
@@ -1255,6 +1295,23 @@ export default function App() {
             onUpdateQty={handleUpdateCartQty}
             onRemoveItem={handleRemoveCartItem}
             onCheckoutSuccess={handleCheckoutSuccess}
+          />
+
+          {/* Wishlist Slider Drawer */}
+          <WishlistDrawer
+            isOpen={isWishlistOpen}
+            onClose={() => setIsWishlistOpen(false)}
+            wishlist={wishlist}
+            products={products}
+            onRemoveItem={handleToggleWishlist}
+            onAddToCart={(product) => {
+              handleAddToCart(product, 'Standard');
+            }}
+            onProductClick={(prodId) => {
+              window.history.pushState(null, '', `?product=${prodId}`);
+              setActiveProductId(prodId);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
           />
 
           {/* Floating Contact Options (WhatsApp + Instagram) */}
