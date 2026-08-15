@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { X, Trash2, ArrowRight, ShoppingBag, CheckCircle } from 'lucide-react';
+import SignIn from './SignIn';
 
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, onRemoveItem, onCheckoutSuccess }) {
   const [isCheckoutMode, setIsCheckoutMode] = useState(false);
+  const [isSignInMode, setIsSignInMode] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [orderId, setOrderId] = useState('');
   const [giftWrap, setGiftWrap] = useState(false);
@@ -15,6 +17,24 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [postal, setPostal] = useState('');
+
+  // Secure Auth token verification helper
+  const isAuthenticated = () => {
+    const token = sessionStorage.getItem('velnora_auth_token');
+    if (!token) return false;
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) return false;
+      const payload = JSON.parse(decodeURIComponent(escape(atob(parts[1]))));
+      if (payload.exp && payload.exp < Date.now() / 1000) {
+        sessionStorage.removeItem('velnora_auth_token'); // Clear expired token
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  };
 
   const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
   const grandTotal = subtotal + (giftWrap ? 450 : 0);
@@ -84,6 +104,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
 
   const handleClose = () => {
     setIsCheckoutMode(false);
+    setIsSignInMode(false);
     setOrderPlaced(false);
     setGiftWrap(false);
     setIsSubmitting(false);
@@ -121,6 +142,19 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
               Continue Exploring
             </button>
           </div>
+        ) : isSignInMode ? (
+          /* Secure Sign-in Verification Screen */
+          <SignIn 
+            onSignInSuccess={(user) => {
+              setEmail(user.email);
+              setPhone(user.phone);
+              setIsSignInMode(false);
+              setIsCheckoutMode(true);
+            }}
+            onBackToCart={() => {
+              setIsSignInMode(false);
+            }}
+          />
         ) : isCheckoutMode ? (
           /* Simulated Checkout Form */
           <form onSubmit={handlePlaceOrder} style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
@@ -375,7 +409,19 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
               </p>
               <button 
                 className="btn-premium"
-                onClick={() => setIsCheckoutMode(true)}
+                onClick={() => {
+                  if (isAuthenticated()) {
+                    try {
+                      const token = sessionStorage.getItem('velnora_auth_token');
+                      const payload = JSON.parse(decodeURIComponent(escape(atob(token.split('.')[1]))));
+                      if (payload.email) setEmail(payload.email);
+                      if (payload.phone) setPhone(payload.phone);
+                    } catch (err) {}
+                    setIsCheckoutMode(true);
+                  } else {
+                    setIsSignInMode(true);
+                  }
+                }}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '100px' }}
               >
                 Proceed to Checkout
