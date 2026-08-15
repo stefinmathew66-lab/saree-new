@@ -1,4 +1,6 @@
+# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
 
-Sitemap: https://thevelnora.com/sitemap.xml
+# Sitemap Link
+Sitemap: https://velnora.com/sitemap.xml

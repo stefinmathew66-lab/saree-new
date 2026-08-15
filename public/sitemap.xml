@@ -2,99 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://thevelnora.com/</loc>
+    <loc>https://velnora.com/</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
-  
-  <!-- Categories -->
+  <!-- Category: Sarees -->
   <url>
-    <loc>https://thevelnora.com/?category=Summer</loc>
+    <loc>https://velnora.com/?category=Sarees</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Category: Suits -->
   <url>
-    <loc>https://thevelnora.com/?category=Sarees</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?category=Suits</loc>
+    <loc>https://velnora.com/?category=Suits</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Category: Co-ords -->
   <url>
-    <loc>https://thevelnora.com/?category=Co-ords</loc>
+    <loc>https://velnora.com/?category=Co-ords</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Saree Subcategories -->
+  <!-- Category: Summer -->
   <url>
-    <loc>https://thevelnora.com/?category=Sarees&amp;subcategory=Silk</loc>
+    <loc>https://velnora.com/?category=Summer</loc>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?category=Sarees&amp;subcategory=Banarasi</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?category=Sarees&amp;subcategory=Organza</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?category=Sarees&amp;subcategory=Linen</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?category=Sarees&amp;subcategory=Georgette</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <!-- Individual Product Pages (Deep Links) -->
-  <url>
-    <loc>https://thevelnora.com/?product=prod-1</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-2</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-3</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-4</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-5</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-6</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-7</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://thevelnora.com/?product=prod-8</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.8</priority>
   </url>
 </urlset>
