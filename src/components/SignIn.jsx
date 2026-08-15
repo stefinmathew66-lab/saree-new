@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Mail, Phone, ArrowRight, ShieldCheck, RefreshCw } from 'lucide-react';
 
-export default function SignIn({ onSignInSuccess, onBackToCart }) {
+export default function SignIn({ onSignInSuccess, onBackToCart, title, subtitle }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [otpSent, setOtpSent] = useState(false);
@@ -191,7 +191,7 @@ export default function SignIn({ onSignInSuccess, onBackToCart }) {
           marginBottom: '0.5rem',
           letterSpacing: '-0.5px'
         }}>
-          Verification Required
+          {title || "Verification Required"}
         </h3>
         
         <p style={{
@@ -202,7 +202,7 @@ export default function SignIn({ onSignInSuccess, onBackToCart }) {
           lineHeight: '1.4'
         }}>
           {!otpSent 
-            ? "Enter your details to receive a secure one-time passcode before checking out."
+            ? (subtitle || "Enter your details to receive a secure one-time passcode before checking out.")
             : "Enter the 6-digit code sent to your email and phone."
           }
         </p>

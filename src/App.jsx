@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Compass } from 'lucide-react';
+import { Compass, X } from 'lucide-react';
 import { defaultProducts } from './data/defaultProducts';
 import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import SpecialOffers from './components/SpecialOffers';
 import Categories from './components/Categories';
+import SignIn from './components/SignIn';
+import WelcomePopup from './components/WelcomePopup';
 import ProductCard from './components/ProductCard';
 import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
@@ -40,6 +42,10 @@ export default function App() {
     Suits: 0,
     'Co-ords': 0
   });
+
+  // Welcome Offer Popup States
+  const [isWelcomePopupOpen, setIsWelcomePopupOpen] = useState(true);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   // Promotional Popup States
   const [showPromo, setShowPromo] = useState(false);
@@ -1251,6 +1257,86 @@ export default function App() {
           {/* Floating Contact Options (WhatsApp + Instagram) */}
           {(currentView === 'storefront' || currentView === 'journal') && (
             <FloatingContact />
+          )}
+
+          {/* Welcome Offer Popup */}
+          <WelcomePopup 
+            isOpen={isWelcomePopupOpen}
+            onClose={() => setIsWelcomePopupOpen(false)}
+            onClaimOffer={() => {
+              setIsWelcomePopupOpen(false);
+              setIsAuthModalOpen(true);
+            }}
+          />
+
+          {/* Global Auth Modal for Welcome Coupon */}
+          {isAuthModalOpen && (
+            <div 
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                width: '100vw',
+                height: '100vh',
+                backgroundColor: 'rgba(0, 0, 0, 0.65)',
+                backdropFilter: 'blur(5px)',
+                WebkitBackdropFilter: 'blur(5px)',
+                zIndex: 2100,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '1rem'
+              }}
+              onClick={() => setIsAuthModalOpen(false)}
+            >
+              <div 
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  maxWidth: '380px',
+                  backgroundColor: '#ffffff',
+                  borderRadius: '16px',
+                  boxShadow: '0 20px 40px rgba(0,0,0,0.25)',
+                  overflow: 'hidden',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Close Button on Top Right */}
+                <button 
+                  onClick={() => setIsAuthModalOpen(false)}
+                  style={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    background: 'none',
+                    border: 'none',
+                    color: '#666666',
+                    cursor: 'pointer',
+                    zIndex: 2110,
+                    outline: 'none',
+                    padding: '0.25rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                  aria-label="Close authentication window"
+                >
+                  <X size={20} />
+                </button>
+
+                <SignIn 
+                  title="join us to get 20% offer"
+                  subtitle="Register with your details to unlock a 20% discount code instantly."
+                  onSignInSuccess={(user) => {
+                    alert(`Welcome to Velnora! Your 20% Welcome Coupon has been activated. Code: WELCOME20`);
+                    setIsAuthModalOpen(false);
+                  }}
+                  onBackToCart={() => setIsAuthModalOpen(false)}
+                />
+              </div>
+            </div>
           )}
 
         </div>
