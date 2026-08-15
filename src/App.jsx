@@ -5,6 +5,7 @@ import Loader from './components/Loader';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import SpecialOffers from './components/SpecialOffers';
+import Categories from './components/Categories';
 import ProductCard from './components/ProductCard';
 import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
@@ -636,6 +637,13 @@ export default function App() {
 
                   {/* Special Offers Section */}
                   <SpecialOffers onExploreClick={(category) => {
+                    setSelectedCategory(category);
+                    setSelectedSubCategory('All');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }} />
+
+                  {/* Categories Section */}
+                  <Categories onCategoryClick={(category) => {
                     setSelectedCategory(category);
                     setSelectedSubCategory('All');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
