@@ -1803,6 +1803,9 @@ body.theme-midnight .footer .btn-premium {
     height: 105px !important;
     background: #ffffff !important;
   }
+  .nav-row-main {
+    padding: 0 0.5rem !important;
+  }
   /* Storefront Navbar mobile adjustments */
   .nav-mobile-toggle {
     display: flex !important;
