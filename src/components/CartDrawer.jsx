@@ -321,7 +321,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
           <>
             <div className="cart-items-container">
               {cartItems.map((item) => (
-                <div key={item.id} className="cart-item">
+                <div key={`${item.id}-${item.selectedSize || ''}`} className="cart-item">
                   <img src={item.image} alt={item.altText || item.title} className="cart-item-img" />
                   
                   <div className="cart-item-info">
@@ -331,6 +331,11 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                         <span style={{ fontSize: '0.7rem', fontFamily: 'var(--font-mono)', textTransform: 'uppercase', color: 'var(--text-mute)', letterSpacing: '0.02em' }}>
                           {item.category}
                         </span>
+                        {item.selectedSize && (
+                          <span style={{ display: 'block', fontSize: '0.68rem', color: 'var(--text-secondary)', marginTop: '0.15rem', fontFamily: 'var(--font-sans)' }}>
+                            Size: <strong>{item.selectedSize}</strong>
+                          </span>
+                        )}
                       </div>
                       <button 
                         onClick={() => onRemoveItem(item.id)}

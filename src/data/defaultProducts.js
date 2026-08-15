@@ -14,7 +14,28 @@ export const defaultProducts = [
     detailImage: "images/silk_kanchipuram_detail.webp",
     altText: "Royal crimson red and gold Kanchipuram silk saree with pure zari gold borders",
     detailAltText: "Close up detail of royal crimson red Kanchipuram silk saree showing intricate handloom zari border weaving",
-    featured: true
+    featured: true,
+    sizes: ["XS", "S", "M", "L", "XL"],
+    reviews: [
+      {
+        id: "r1-1",
+        author: "Meera K.",
+        rating: 5.0,
+        date: "12 May 2026",
+        text: "The saree is absolutely breathtaking! The gold zari is dense and shines elegantly. Truly a heritage piece.",
+        size: "M",
+        images: ["images/silk_kanchipuram_detail.webp"]
+      },
+      {
+        id: "r1-2",
+        author: "Aishwarya S.",
+        rating: 4.8,
+        date: "04 Jun 2026",
+        text: "Beautiful Kanchipuram work. Packaging was outstanding, smelling of rich cedar. Drape is perfect.",
+        size: "S",
+        images: []
+      }
+    ]
   },
   {
     id: "prod-2",
@@ -31,7 +52,19 @@ export const defaultProducts = [
     detailImage: "images/banarasi_pink_detail.webp",
     altText: "Exquisite blush pink Banarasi silk saree with floral silver zari motifs",
     detailAltText: "Close up detail of blush pink Banarasi Katan silk saree showing Mughal floral kalabattu silver zari embroidery",
-    featured: true
+    featured: true,
+    sizes: ["S", "M", "L", "XL"],
+    reviews: [
+      {
+        id: "r2-1",
+        author: "Ritu M.",
+        rating: 5.0,
+        date: "28 Jun 2026",
+        text: "Stunning blush pink shade! The Mughal bootis look very premium. Got so many compliments at my brother's wedding.",
+        size: "M",
+        images: ["images/banarasi_pink_detail.webp"]
+      }
+    ]
   },
   {
     id: "prod-3",
@@ -48,7 +81,19 @@ export const defaultProducts = [
     detailImage: "images/organza_mint_detail.webp",
     altText: "Translucent mint green organza saree with scalloped gold border",
     detailAltText: "Close up detail of mint green organza saree showing delicate hand-crafted scalloped gold border",
-    featured: false
+    featured: false,
+    sizes: ["XS", "S", "M", "L"],
+    reviews: [
+      {
+        id: "r3-1",
+        author: "Sneha P.",
+        rating: 4.6,
+        date: "14 Jul 2026",
+        text: "Very lightweight and elegant. The scalloped gold border is beautiful.",
+        size: "S",
+        images: ["images/organza_mint_detail.webp"]
+      }
+    ]
   },
   {
     id: "prod-4",
@@ -65,7 +110,19 @@ export const defaultProducts = [
     detailImage: "images/linen_beige_detail.webp",
     altText: "Minimalist ivory and beige organic linen-silk saree with vertical gold stripes",
     detailAltText: "Close up detail of ivory linen-silk saree highlighting thin metallic silver lines and vertical gold stripes",
-    featured: false
+    featured: false,
+    sizes: ["S", "M", "L"],
+    reviews: [
+      {
+        id: "r4-1",
+        author: "Pooja V.",
+        rating: 4.5,
+        date: "02 Aug 2026",
+        text: "Comfortable fabric, perfect for office wear or daytime pujas. Linen details are neat.",
+        size: "M",
+        images: []
+      }
+    ]
   },
   {
     id: "prod-5",
@@ -82,13 +139,25 @@ export const defaultProducts = [
     detailImage: "images/georgette_indigo_detail.webp",
     altText: "Midnight indigo blue pure Georgette silk saree with heavy brocade gold zari border",
     detailAltText: "Close up detail of deep indigo blue pure Georgette saree showing heavy antique gold zari brocade work",
-    featured: true
+    featured: true,
+    sizes: ["XS", "S", "M", "L", "XL"],
+    reviews: [
+      {
+        id: "r5-1",
+        author: "Devika G.",
+        rating: 4.9,
+        date: "10 Aug 2026",
+        text: "Fabulous indigo color! The Georgette fabric quality is superior and has a heavy, premium feel.",
+        size: "L",
+        images: ["images/georgette_indigo_detail.webp"]
+      }
+    ]
   },
   {
     id: "prod-6",
     title: "Aura Linen Dress",
     category: "Summer",
-    price: 7200,
+    price: 1266,
     description: "A lightweight, breathable organic linen slip dress styled in ivory and sand tones. Perfect for warm summer afternoons and effortless luxury.",
     material: "100% Organic Linen",
     zari: "None",
@@ -98,7 +167,31 @@ export const defaultProducts = [
     detailImage: "images/summer_dress_detail.webp",
     altText: "Lightweight sand-toned organic linen summer slip dress",
     detailAltText: "Detailed texture profile of organic linen summer dress in sand tones",
-    featured: true
+    featured: true,
+    sizes: ["XS", "S", "M", "L"],
+    reviews: [
+      {
+        id: "r6-1",
+        author: "9***2",
+        rating: 5.0,
+        date: "29 Jul 2026",
+        text: "Absolutely loved my purchase! The quality exceeded my expectations, and the outfit looks exactly like the pictures. ❤️ Just obsessed with the backless design.",
+        size: "XS",
+        images: [
+          "images/summer_dress_detail.webp",
+          "images/summer_dress.webp"
+        ]
+      },
+      {
+        id: "r6-2",
+        author: "Priti R.",
+        rating: 4.8,
+        date: "11 Aug 2026",
+        text: "Perfect linen material for peak summers. Fits very nicely, super cozy.",
+        size: "S",
+        images: []
+      }
+    ]
   },
   {
     id: "prod-7",
@@ -114,7 +207,19 @@ export const defaultProducts = [
     detailImage: "images/suit_anarkali_detail.webp",
     altText: "Luxury gold-embroidered mulberry silk Anarkali suit set with sheer organza dupatta",
     detailAltText: "Detailed view of gold thread embroidery on mulberry silk Anarkali neck design",
-    featured: true
+    featured: true,
+    sizes: ["S", "M", "L", "XL"],
+    reviews: [
+      {
+        id: "r7-1",
+        author: "Nisha D.",
+        rating: 5.0,
+        date: "20 Jul 2026",
+        text: "Excellent gold thread embroidery. Fits perfectly and looks very royal.",
+        size: "M",
+        images: ["images/suit_anarkali_detail.webp"]
+      }
+    ]
   },
   {
     id: "prod-8",
@@ -130,6 +235,21 @@ export const defaultProducts = [
     detailImage: "images/coord_set_detail.webp",
     altText: "Modern high-fashion printed Crepe silk co-ord set shirt and trousers",
     detailAltText: "Detailed close up of custom luxury prints on mulberry Crepe silk fabric",
-    featured: true
+    featured: true,
+    sizes: ["XS", "S", "M", "L"],
+    reviews: [
+      {
+        id: "r8-1",
+        author: "Simran T.",
+        rating: 5.0,
+        date: "05 Aug 2026",
+        text: "The print is so vibrant and beautiful. The mulberry silk feel is extremely premium.",
+        size: "S",
+        images: [
+          "images/coord_set_detail.webp",
+          "images/coord_set.webp"
+        ]
+      }
+    ]
   }
 ];

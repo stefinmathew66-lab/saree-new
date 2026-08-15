@@ -9,6 +9,7 @@ import Categories from './components/Categories';
 import SignIn from './components/SignIn';
 import WelcomePopup from './components/WelcomePopup';
 import ProductCard from './components/ProductCard';
+import ProductDetailView from './components/ProductDetailView';
 import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
 import AdminLogin from './components/AdminLogin';
@@ -35,6 +36,7 @@ export default function App() {
   const [selectedSubCategory, setSelectedSubCategory] = useState('All');
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [activeProductId, setActiveProductId] = useState(null); // For full-page product detail routing
   const [atmosphere, setAtmosphere] = useState('ivory'); // 'ivory' or 'midnight'
   const [showcaseSlideIndices, setShowcaseSlideIndices] = useState({
     Summer: 0,
@@ -191,16 +193,26 @@ export default function App() {
 
     if (params.has('product')) {
       const productId = params.get('product');
-      const activeProdList = parsedProducts.length > 0 && !hasOldCategories && !hasAbsolutePaths ? parsedProducts : defaultProducts;
-      const matchedProduct = activeProdList.find(p => p.id === productId);
-      if (matchedProduct) {
-        setSelectedProduct(matchedProduct);
-      }
+      setActiveProductId(productId);
     }
 
     if (params.has('article')) {
       setActiveArticle(params.get('article'));
     }
+  }, []);
+
+  // Listen for browser back/forward to update activeProductId
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('product')) {
+        setActiveProductId(params.get('product'));
+      } else {
+        setActiveProductId(null);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   // Sync Cart to localStorage when mutated
@@ -418,8 +430,8 @@ export default function App() {
   }, [isLoaded, currentView, products, selectedCategory]);
 
   // Cart operations
-  const handleAddToCart = (product) => {
-    const existingIndex = cart.findIndex((item) => item.id === product.id);
+  const handleAddToCart = (product, size) => {
+    const existingIndex = cart.findIndex((item) => item.id === product.id && (item.selectedSize || '') === (size || ''));
     
     // Check stock limit
     const currentQty = existingIndex > -1 ? cart[existingIndex].quantity : 0;
@@ -437,7 +449,7 @@ export default function App() {
         newCart[existingIndex].isPromo = true;
       }
     } else {
-      newCart.push({ ...product, quantity: 1 });
+      newCart.push({ ...product, quantity: 1, selectedSize: size || '' });
     }
     saveCart(newCart);
     setIsCartOpen(true);
@@ -616,7 +628,31 @@ export default function App() {
             <>
               <main id="main-content" style={{ marginTop: 'var(--nav-height)' }}>
               
-              {selectedCategory === 'All' ? (
+              {activeProductId ? (
+                /* PRODUCT DETAIL PAGE VIEW */
+                (() => {
+                  const activeProduct = products.find(p => p.id === activeProductId);
+                  if (!activeProduct) {
+                    return (
+                      <div style={{ padding: '4rem 2rem', textAlign: 'center' }}>
+                        <h3>Product not found</h3>
+                        <button onClick={() => { setActiveProductId(null); window.history.pushState(null, '', '/'); }} className="btn-premium" style={{ marginTop: '1rem' }}>Back to Store</button>
+                      </div>
+                    );
+                  }
+                  return (
+                    <ProductDetailView
+                      product={activeProduct}
+                      allProducts={products}
+                      onBack={() => {
+                        setActiveProductId(null);
+                        window.history.pushState(null, '', '/');
+                      }}
+                      onAddToCart={handleAddToCart}
+                    />
+                  );
+                })()
+              ) : selectedCategory === 'All' ? (
                 /* HOMEPAGE VIEW */
                 <>
 
@@ -1016,7 +1052,10 @@ export default function App() {
                         <ProductCard 
                           key={product.id}
                           product={product}
-                          onCardClick={setSelectedProduct}
+                          onCardClick={(p) => {
+                            window.history.pushState(null, '', `?product=${p.id}`);
+                            setActiveProductId(p.id);
+                          }}
                           onQuickAdd={handleAddToCart}
                         />
                       ))}

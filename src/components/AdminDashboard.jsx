@@ -48,6 +48,7 @@ export default function AdminDashboard({
   const [subcategory, setSubcategory] = useState('Silk');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
+  const [sizes, setSizes] = useState(['XS', 'S', 'M', 'L']);
   const [description, setDescription] = useState('');
   const [material, setMaterial] = useState('');
   const [zari, setZari] = useState('');
@@ -80,6 +81,7 @@ export default function AdminDashboard({
     setSubcategory('Silk');
     setPrice('');
     setStock('');
+    setSizes(['XS', 'S', 'M', 'L']);
     setDescription('');
     setMaterial('');
     setZari('');
@@ -97,6 +99,7 @@ export default function AdminDashboard({
     setSubcategory(product.subcategory || 'Silk');
     setPrice(product.price.toString());
     setStock(product.stock.toString());
+    setSizes(product.sizes || ['XS', 'S', 'M', 'L']);
     setDescription(product.description || '');
     setMaterial(product.material || '');
     setZari(product.zari || '');
@@ -137,6 +140,7 @@ export default function AdminDashboard({
       care,
       image: finalImage,
       detailImage: finalImage,
+      sizes,
       id: editingProduct ? editingProduct.id : `prod-${Date.now()}`
     };
 
@@ -415,6 +419,7 @@ export default function AdminDashboard({
                       <th>Category</th>
                       <th>Price</th>
                       <th>Stock</th>
+                      <th>Sizes</th>
                       <th>Material Details</th>
                       <th style={{ textAlign: 'right' }}>Actions</th>
                     </tr>
@@ -440,6 +445,9 @@ export default function AdminDashboard({
                           <span style={{ color: product.stock === 0 ? '#C62828' : product.stock <= 3 ? '#E65100' : 'inherit', fontWeight: product.stock <= 3 ? 600 : 'normal' }}>
                             {product.stock} units
                           </span>
+                        </td>
+                        <td style={{ fontSize: '0.75rem', fontWeight: 500 }}>
+                          {product.sizes && product.sizes.length > 0 ? product.sizes.join(', ') : 'None'}
                         </td>
                         <td style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
                           {product.material ? product.material.split(',')[0] : 'Pure Silk'}
@@ -710,6 +718,29 @@ export default function AdminDashboard({
                 onChange={(e) => setStock(e.target.value)}
                 style={{ width: '100%', padding: '0px 12px', height: '40px', border: '1px solid var(--border-color)', borderRadius: '6px', fontSize: '0.875rem', outline: 'none' }}
               />
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '1.25rem' }}>
+              <label className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 500, marginBottom: '0.4rem', color: 'var(--text-secondary)' }}>Available Sizes</label>
+              <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
+                {['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((sz) => (
+                  <label key={sz} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', cursor: 'pointer', fontFamily: 'var(--font-sans)', color: 'var(--text-primary)' }}>
+                    <input 
+                      type="checkbox" 
+                      checked={sizes.includes(sz)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setSizes([...sizes, sz]);
+                        } else {
+                          setSizes(sizes.filter(s => s !== sz));
+                        }
+                      }}
+                      style={{ accentColor: 'var(--text-primary)' }}
+                    />
+                    {sz}
+                  </label>
+                ))}
+              </div>
             </div>
 
             <div className="form-group" style={{ marginBottom: '1.25rem' }}>
