@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNotification } from './NotificationProvider';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -38,6 +39,7 @@ export default function AdminDashboard({
   onUpdateOrderStatus,
   onDeleteInquiry
 }) {
+  const { toast } = useNotification();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -122,7 +124,7 @@ export default function AdminDashboard({
     e.preventDefault();
 
     if (!title || !price || !stock) {
-      alert("Please fill in the required fields (Title, Price, Stock).");
+      toast.error("Please fill in the required fields (Title, Price, Stock).");
       return;
     }
 

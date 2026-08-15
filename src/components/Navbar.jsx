@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from './NotificationProvider';
 import { ShoppingBag, User, Menu, X, Search, Heart, RotateCcw, Zap, Truck } from 'lucide-react';
 
 export default function Navbar({ 
@@ -11,6 +12,7 @@ export default function Navbar({
   selectedCategory,
   onCategoryChange
 }) {
+  const { toast } = useNotification();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -89,7 +91,7 @@ export default function Navbar({
                 padding: '0.25rem'
               }}
               aria-label="Search"
-              onClick={() => alert("Search functionality is under development")}
+              onClick={() => toast.info("Search functionality is under development")}
             >
               <Search size={20} strokeWidth={1.5} aria-hidden="true" />
             </button>
@@ -191,7 +193,7 @@ export default function Navbar({
                 padding: '0.25rem'
               }}
               aria-label="Wishlist"
-              onClick={() => alert("Wishlist is under development")}
+              onClick={() => toast.info("Wishlist is under development")}
             >
               <Heart size={20} strokeWidth={1.5} aria-hidden="true" />
             </button>

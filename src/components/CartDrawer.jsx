@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNotification } from './NotificationProvider';
 import { X, Trash2, ArrowRight, ShoppingBag, CheckCircle } from 'lucide-react';
 import SignIn from './SignIn';
 
@@ -19,6 +20,7 @@ const loadRazorpayScript = () => {
 };
 
 export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, onRemoveItem, onCheckoutSuccess }) {
+  const { toast, alert: showAlert } = useNotification();
   const [isCheckoutMode, setIsCheckoutMode] = useState(false);
   const [isSignInMode, setIsSignInMode] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
@@ -60,7 +62,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
     if (newQty > 0 && newQty <= stockLimit) {
       onUpdateQty(itemId, newQty);
     } else if (newQty > stockLimit) {
-      alert(`Only ${stockLimit} units of this design are available in stock.`);
+      toast.warning(`Only ${stockLimit} units of this design are available in stock.`);
     }
   };
 
@@ -126,12 +128,16 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
       if (data.success) {
         processSuccessfulPayment(razorpayResponse);
       } else {
-        alert(`Payment verification failed: ${data.message || 'Invalid signature'}`);
+        showAlert({
+          title: "Payment Verification Failed",
+          message: `Payment verification failed: ${data.message || 'Invalid signature'}`,
+          type: "error"
+        });
         setIsSubmitting(false);
       }
     } catch (error) {
       console.error("Payment verification request failed:", error);
-      alert("Payment verification failed to reach server. Approving locally for safety.");
+      toast.info("Payment verification failed to reach server. Approving locally for safety.");
       processSuccessfulPayment(razorpayResponse);
     }
   };
@@ -177,7 +183,11 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
       rzp.open();
     } catch (err) {
       console.error("Razorpay Modal Error:", err);
-      alert(`Could not open Razorpay checkout: ${err.message}`);
+      showAlert({
+        title: "Payment Checkout Error",
+        message: `Could not open Razorpay checkout: ${err.message}`,
+        type: "error"
+      });
       setIsSubmitting(false);
     }
   };
@@ -185,7 +195,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
     if (!name || !email || !phone || !address || !city || !postal) {
-      alert("Please fill in all the details for shipping your handloom saree package.");
+      toast.warning("Please fill in all the details for shipping your handloom saree package.");
       return;
     }
 
@@ -216,7 +226,11 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
     // Load Razorpay Script
     const scriptLoaded = await loadRazorpayScript();
     if (!scriptLoaded) {
-      alert("Unable to load payment gateway SDK. Please check your internet connection or try again.");
+      showAlert({
+        title: "Script Load Error",
+        message: "Unable to load payment gateway SDK. Please check your internet connection or try again.",
+        type: "error"
+      });
       setIsSubmitting(false);
       return;
     }

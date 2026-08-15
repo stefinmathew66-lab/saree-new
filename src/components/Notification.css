@@ -1,0 +1,288 @@
+/* Premium Notification Styling for Velnora Boutique */
+
+/* Toast Container */
+.velnora-toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 380px;
+  width: 100%;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .velnora-toast-container {
+    top: 1rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
+  }
+}
+
+/* Toast Base */
+.velnora-toast {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(23, 23, 23, 0.08);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  pointer-events: auto;
+  overflow: hidden;
+  animation: velnora-toast-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+body.theme-midnight .velnora-toast {
+  background: rgba(19, 31, 28, 0.8);
+  border: 1px solid rgba(236, 239, 239, 0.08);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Toast animations */
+@keyframes velnora-toast-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Toast Icons */
+.velnora-toast-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.velnora-toast.success .velnora-toast-icon-wrapper {
+  color: #10b981; /* Premium Emerald */
+}
+body.theme-midnight .velnora-toast.success .velnora-toast-icon-wrapper {
+  color: var(--accent-gold); /* Rose gold success icon in midnight lounge */
+}
+
+.velnora-toast.error .velnora-toast-icon-wrapper {
+  color: #ef4444; /* Premium Sunset Red */
+}
+
+.velnora-toast.warning .velnora-toast-icon-wrapper {
+  color: #f59e0b; /* Amber */
+}
+
+.velnora-toast.info .velnora-toast-icon-wrapper {
+  color: #0070f3; /* Accent Blue */
+}
+
+/* Toast message text */
+.velnora-toast-message {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* Toast close button */
+.velnora-toast-close {
+  background: none;
+  border: none;
+  color: var(--text-mute);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: var(--transition-fast);
+}
+
+.velnora-toast-close:hover {
+  color: var(--text-primary);
+  background: rgba(23, 23, 23, 0.05);
+}
+
+body.theme-midnight .velnora-toast-close:hover {
+  background: rgba(236, 239, 239, 0.05);
+}
+
+/* Progress bar timeline */
+.velnora-toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2.5px;
+  width: 100%;
+  transform-origin: left;
+  animation: velnora-toast-progress-bar linear forwards;
+}
+
+@keyframes velnora-toast-progress-bar {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.velnora-toast.success .velnora-toast-progress {
+  background: #10b981;
+}
+body.theme-midnight .velnora-toast.success .velnora-toast-progress {
+  background: var(--accent-gold);
+}
+
+.velnora-toast.error .velnora-toast-progress {
+  background: #ef4444;
+}
+
+.velnora-toast.warning .velnora-toast-progress {
+  background: #f59e0b;
+}
+
+.velnora-toast.info .velnora-toast-progress {
+  background: #0070f3;
+}
+
+/* ==========================================================================
+   Custom Alert Modal Overlay & Card
+   ========================================================================= */
+.velnora-alert-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(30, 28, 26, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: velnora-alert-fade-in 0.3s ease forwards;
+}
+
+.velnora-alert-modal {
+  width: 100%;
+  max-width: 440px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
+  animation: velnora-alert-scale-in 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+body.theme-midnight .velnora-alert-modal {
+  border: 1px solid rgba(236, 239, 239, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+@keyframes velnora-alert-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes velnora-alert-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Alert Header */
+.velnora-alert-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.velnora-alert-header h3 {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.velnora-alert-icon {
+  flex-shrink: 0;
+}
+
+.velnora-alert-header.success .velnora-alert-icon { color: #10b981; }
+body.theme-midnight .velnora-alert-header.success .velnora-alert-icon { color: var(--accent-gold); }
+
+.velnora-alert-header.error .velnora-alert-icon { color: #ef4444; }
+.velnora-alert-header.warning .velnora-alert-icon { color: #f59e0b; }
+.velnora-alert-header.info .velnora-alert-icon { color: #0070f3; }
+
+/* Alert Body */
+.velnora-alert-body {
+  padding: 1.5rem;
+}
+
+.velnora-alert-body p {
+  font-family: var(--font-sans);
+  font-size: 0.925rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Alert Footer */
+.velnora-alert-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+}
+
+/* Action button inside alert, styled in line with Velnora's premium button rules */
+.velnora-alert-btn {
+  background: var(--accent-gold);
+  color: var(--bg-primary);
+  border: 1px solid transparent;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+}
+
+.velnora-alert-btn:hover {
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  transform: translateY(-1px);
+}
+
+.velnora-alert-btn:active {
+  transform: translateY(0);
+}

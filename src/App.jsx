@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from './components/NotificationProvider';
 import { Compass, X } from 'lucide-react';
 import { defaultProducts } from './data/defaultProducts';
 import Loader from './components/Loader';
@@ -23,6 +24,7 @@ import { blogArticles } from './data/blogArticles';
 import BlogJournal from './components/BlogJournal';
 
 export default function App() {
+  const { toast, alert: showAlert } = useNotification();
   const [isLoaded, setIsLoaded] = useState(false);
   const [currentView, setCurrentView] = useState('storefront'); // 'storefront' or 'admin'
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(false);
@@ -459,7 +461,11 @@ export default function App() {
     // Check stock limit
     const currentQty = existingIndex > -1 ? cart[existingIndex].quantity : 0;
     if (currentQty + 1 > product.stock) {
-      alert(`Only ${product.stock} units of this masterwork are available. Cannot add more.`);
+      showAlert({
+        title: "Inventory Limit",
+        message: `Only ${product.stock} units of this masterwork are available. Cannot add more.`,
+        type: "warning"
+      });
       return;
     }
 
@@ -1030,7 +1036,7 @@ export default function App() {
                         <button 
                           className="btn-premium"
                           style={{ padding: '0.75rem 1.25rem', background: 'var(--accent-gold)', borderColor: 'var(--accent-gold)', color: 'var(--text-primary)' }}
-                          onClick={() => alert('Thank you for subscribing to The Velnora Sarees.')}
+                          onClick={() => toast.success('Thank you for subscribing to The Velnora Sarees.')}
                         >
                           Join
                         </button>
@@ -1123,7 +1129,7 @@ export default function App() {
                         <button 
                           className="btn-premium"
                           style={{ padding: '0.75rem 1.25rem', background: 'var(--accent-gold)', borderColor: 'var(--accent-gold)', color: 'var(--text-primary)' }}
-                          onClick={() => alert('Thank you for subscribing to The Velnora Sarees.')}
+                          onClick={() => toast.success('Thank you for subscribing to The Velnora Sarees.')}
                         >
                           Join
                         </button>
@@ -1268,7 +1274,11 @@ export default function App() {
                   title="join us to get 20% offer"
                   subtitle="Register with your details to unlock a 20% discount code instantly."
                   onSignInSuccess={(user) => {
-                    alert(`Welcome to Velnora! Your 20% Welcome Coupon has been activated. Code: WELCOME20`);
+                    showAlert({
+                      title: "Welcome Coupon Activated",
+                      message: `Welcome to Velnora! Your 20% Welcome Coupon has been activated. Code: WELCOME20`,
+                      type: "success"
+                    });
                     setIsAuthModalOpen(false);
                   }}
                   onBackToCart={() => setIsAuthModalOpen(false)}

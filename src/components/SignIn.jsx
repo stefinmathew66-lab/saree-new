@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNotification } from './NotificationProvider';
 import { Mail, Phone, ArrowRight, ShieldCheck, RefreshCw } from 'lucide-react';
 
 export default function SignIn({ onSignInSuccess, onBackToCart, title, subtitle }) {
+  const { toast, alert: showAlert } = useNotification();
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [otpSent, setOtpSent] = useState(false);
@@ -106,12 +108,16 @@ export default function SignIn({ onSignInSuccess, onBackToCart, title, subtitle 
     const enteredOtp = otpCode.join('');
 
     if (enteredOtp.length < 6) {
-      alert("Please enter the complete 6-digit verification code.");
+      toast.warning("Please enter the complete 6-digit verification code.");
       return;
     }
 
     if (timer === 0) {
-      alert("OTP has expired. Please request a new code.");
+      showAlert({
+        title: "OTP Expired",
+        message: "OTP has expired. Please request a new code.",
+        type: "error"
+      });
       return;
     }
 
@@ -138,9 +144,13 @@ export default function SignIn({ onSignInSuccess, onBackToCart, title, subtitle 
       if (newAttempts >= 3) {
         setIsLocked(true);
         setLockoutTime(30); // 30s lockout
-        alert("Too many failed attempts. Login is temporarily locked for 30 seconds for security.");
+        showAlert({
+          title: "Account Locked",
+          message: "Too many failed attempts. Login is temporarily locked for 30 seconds for security.",
+          type: "error"
+        });
       } else {
-        alert(`Incorrect OTP code. You have ${3 - newAttempts} attempts remaining.`);
+        toast.error(`Incorrect OTP code. You have ${3 - newAttempts} attempts remaining.`);
       }
     }
   };

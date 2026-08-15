@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNotification } from './NotificationProvider';
 import { 
   ArrowLeft, 
   Heart, 
@@ -17,6 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function ProductDetailView({ product, onBack, onAddToCart, allProducts }) {
+  const { toast } = useNotification();
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState('');
   const [isAboutOpen, setIsAboutOpen] = useState(true);
@@ -78,11 +80,11 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
 
   const handleSubmitReview = () => {
     if (reviewRating === 0) {
-      alert("Please select a star rating.");
+      toast.warning("Please select a star rating.");
       return;
     }
     if (!reviewText.trim()) {
-      alert("Please write your review.");
+      toast.warning("Please write your review.");
       return;
     }
     const now = new Date();
@@ -117,11 +119,11 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
 
   const handleAddToBag = () => {
     if (productSizes.length > 0 && !selectedSize && !productSizes.includes("Standard")) {
-      alert("Please select a size before adding the item to your Collection Bag.");
+      toast.warning("Please select a size before adding the item to your Collection Bag.");
       return;
     }
     onAddToCart(product, selectedSize || "Standard");
-    alert(`${product.title} (${selectedSize || "Standard"}) has been added to your shopping bag.`);
+    toast.success(`${product.title} (${selectedSize || "Standard"}) has been added to your shopping bag.`);
   };
 
   return (
@@ -416,7 +418,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
 
             {/* Chat Consultation */}
             <button
-              onClick={() => alert("Connecting you to a Velnora design consultant via WhatsApp…")}
+              onClick={() => toast.success("Connecting you to a Velnora design consultant via WhatsApp…")}
               style={{
                 width: '46px',
                 height: '46px',
@@ -644,7 +646,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
             {/* Actions: See All & Write Review */}
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem' }}>
               <button 
-                onClick={() => alert("Showing all guest verification reviews…")}
+                onClick={() => toast.info("Showing all guest verification reviews…")}
                 style={{
                   flex: 1,
                   padding: '0.75rem',
