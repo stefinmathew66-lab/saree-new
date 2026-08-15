@@ -10,6 +10,7 @@ import SignIn from './components/SignIn';
 import WelcomePopup from './components/WelcomePopup';
 import ProductCard from './components/ProductCard';
 import ProductDetailView from './components/ProductDetailView';
+import TrendTranslation from './components/TrendTranslation';
 import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
 import AdminLogin from './components/AdminLogin';
@@ -690,6 +691,9 @@ export default function App() {
                     setSelectedSubCategory('All');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }} />
+
+                  {/* Trend Translation Section */}
+                  <TrendTranslation onSignInClick={() => setIsAuthModalOpen(true)} />
 
                   {/* Category Banners Showcase (Examples of each category on main page) */}
                   <section style={{ padding: '8rem 0', backgroundColor: 'var(--bg-primary)' }}>
