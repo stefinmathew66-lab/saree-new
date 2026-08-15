@@ -23,7 +23,7 @@ export const blogArticles = [
       },
       {
         type: "paragraph",
-        text: "The safest first step is verifying the official Silk Mark label. Authorized by the Silk Mark Organisation of India (SMOI), this tag is only awarded to 100% pure natural silk products. Every genuine Velnora Kanchipuram saree carries a certified Silk Mark hologram and code card to guarantee fiber purity."
+        text: "The safest first step is verifying the official Silk Mark label. Authorized by the Silk Mark Organisation of India (SMOI), this tag is only awarded to 100% pure natural silk products. Every genuine <a href=\"/?product=prod-1\" style=\"color: var(--accent-gold-dark); text-decoration: underline;\">Velnora Kanchipuram saree</a> carries a certified Silk Mark hologram and code card to guarantee fiber purity."
       },
       {
         type: "heading",
@@ -67,7 +67,7 @@ export const blogArticles = [
     content: [
       {
         type: "paragraph",
-        text: "When it comes to bridal trousseaus and heritage Indian celebrations, two weaves stand supreme: the Banarasi silk saree from the holy city of Varanasi, and the Kanchipuram silk saree from the southern temple town. While both represent peak artisan drapes, they differ significantly in origin, silk weight, motif aesthetics, and weaving technique."
+        text: "When it comes to bridal trousseaus and heritage Indian celebrations, two weaves stand supreme: the <a href=\"/?product=prod-2\" style=\"color: var(--accent-gold-dark); text-decoration: underline;\">Banarasi silk saree</a> from the holy city of Varanasi, and the <a href=\"/?product=prod-1\" style=\"color: var(--accent-gold-dark); text-decoration: underline;\">Kanchipuram silk saree</a> from the southern temple town. While both represent peak artisan drapes, they differ significantly in origin, silk weight, motif aesthetics, and weaving technique."
       },
       {
         type: "heading",
@@ -99,7 +99,7 @@ export const blogArticles = [
       },
       {
         type: "paragraph",
-        text: "Look at the design motifs to spot the difference immediately. Kanchipuram designs feature temple structures, peacocks, elephants, parrots, and checkers. Banarasi designs represent Islamic floral scrolls, mango designs (Kalka), hunting scenes (Shikargah), and mesh grids (Jaal). Choosing between them is a matter of deciding between the structured, heavy temple style of the South or the fluid, floral tapestry of the North."
+        text: "Look at the design motifs to spot the difference immediately. Kanchipuram designs feature temple structures, peacocks, elephants, parrots, and checkers. Banarasi designs represent Islamic floral scrolls, mango designs (Kalka), hunting scenes (Shikargah), and mesh grids (Jaal). Choosing between them is a matter of deciding between the structured, heavy temple style of the South or the fluid, floral tapestry of the North (such as our heavy gold-zari <a href=\"/?product=prod-5\" style=\"color: var(--accent-gold-dark); text-decoration: underline;\">Midnight Indigo Georgette saree</a>)."
       }
     ]
   },
@@ -127,7 +127,7 @@ export const blogArticles = [
       },
       {
         type: "paragraph",
-        text: "Never store your pure silk sarees in plastic bags or zip-locks. Plastic traps moisture, which accelerates zari oxidation and can breed mildew. Instead, wrap each saree individually in clean, unbleached cotton or muslin cloth. Muslin allows the silk to breathe while blocking dust and ambient moisture."
+        text: "Never store your pure silk sarees in plastic bags or zip-locks. Plastic traps moisture, which accelerates zari oxidation and can breed mildew. Instead, wrap each saree individually in clean, unbleached cotton or muslin cloth. Muslin allows the silk to breathe while blocking dust and ambient moisture. You can also explore our organic, resort-friendly <a href=\"/?trend=free-spirit\" style=\"color: var(--accent-gold-dark); text-decoration: underline;\">Free Spirit Linen Collection</a> for lightweight drapes."
       },
       {
         type: "heading",
@@ -151,7 +151,7 @@ export const blogArticles = [
       },
       {
         type: "paragraph",
-        text: "Never iron a silk saree directly on the zari border. Use a clean cotton cloth as a protective layer and iron on medium heat. If your saree gets stained, avoid home remedies or instant washes. Take it to a dry cleaning specialist who has experience handling heritage handlooms to ensure the zari remains undamaged."
+        text: "Never iron a silk saree directly on the zari border. Use a clean cotton cloth as a protective layer and iron on medium heat. If your saree gets stained, avoid home remedies or instant washes (like on our translucent <a href=\"/?product=prod-3\" style=\"color: var(--accent-gold-dark); text-decoration: underline;\">Mint Whisper Organza saree</a>). Take it to a dry cleaning specialist who has experience handling heritage handlooms to ensure the zari remains undamaged."
       }
     ]
   }

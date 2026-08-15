@@ -6,21 +6,21 @@ This guide details the operational steps to activate, verify, and monitor the SE
 
 ## 1. Google Search Console & Google Analytics (GA4) Integration
 
-We have prepared the code integration hooks inside [index.html](file:///Users/stefin/Documents/Aescripts%20Flow%201.5.1%20for%20After%20Effects/sanet.st.imfamous.flow-v1.5.1/flow-v1.5.1/META-INF/saree%20web/index.html). Follow these steps to activate tracking:
+We have prepared the code integration hooks inside [index.html](file:///Users/stefin/Desktop/sareee%20new/index.html). Follow these steps to activate tracking:
 
 ### Step A: Google Analytics (GA4) Activation
 1. Sign in to your [Google Analytics Console](https://analytics.google.com/).
 2. Create a new **GA4 Property** named "The Velnora Web Store".
 3. Under Data Streams, select **Web** and enter your production URL (e.g., `https://thevelnora.com`).
 4. Copy your **Measurement ID** (format: `G-XXXXXXXXXX`).
-5. Open [index.html](file:///Users/stefin/Documents/Aescripts%20Flow%201.5.1%20for%20After%20Effects/sanet.st.imfamous.flow-v1.5.1/flow-v1.5.1/META-INF/saree%20web/index.html) and replace both occurrences of `G-XXXXXXXXXX` with your actual Measurement ID.
+5. Open [index.html](file:///Users/stefin/Desktop/sareee%20new/index.html) and replace both occurrences of `G-XXXXXXXXXX` with your actual Measurement ID.
 
 ### Step B: Google Search Console (GSC) Ownership Verification
 1. Sign in to [Google Search Console](https://search.google.com/search-console/).
 2. Add your website property using the **URL Prefix** option (e.g., `https://thevelnora.com/`).
 3. Under Verification Methods, select **HTML Tag**.
 4. Copy the verification code value (inside the `content="..."` attribute).
-5. Open [index.html](file:///Users/stefin/Documents/Aescripts%20Flow%201.5.1%20for%20After%20Effects/sanet.st.imfamous.flow-v1.5.1/flow-v1.5.1/META-INF/saree%20web/index.html) and replace `YOUR_GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE_HERE` in the meta tag on Line 9.
+5. Open [index.html](file:///Users/stefin/Desktop/sareee%20new/index.html) and replace `YOUR_GOOGLE_SEARCH_CONSOLE_VERIFICATION_CODE_HERE` in the meta tag on Line 9.
 6. Commit/deploy your site to production, then click **Verify** in the GSC console.
 
 ### Step C: Linking GSC and GA4 for Unified Insights

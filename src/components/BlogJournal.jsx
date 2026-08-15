@@ -137,9 +137,11 @@ export default function BlogJournal({
             {selectedArticle.content.map((block, idx) => {
               if (block.type === 'paragraph') {
                 return (
-                  <p key={idx} style={{ marginBottom: '2rem', textAlign: 'justify' }}>
-                    {block.text}
-                  </p>
+                  <p 
+                    key={idx} 
+                    style={{ marginBottom: '2rem', textAlign: 'justify' }}
+                    dangerouslySetInnerHTML={{ __html: block.text }}
+                  />
                 );
               } else if (block.type === 'heading') {
                 return (
