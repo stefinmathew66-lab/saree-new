@@ -11,6 +11,7 @@ import WelcomePopup from './components/WelcomePopup';
 import ProductCard from './components/ProductCard';
 import ProductDetailView from './components/ProductDetailView';
 import TrendTranslation from './components/TrendTranslation';
+import VelnoraCollection from './components/VelnoraCollection';
 import ProductDetailModal from './components/ProductDetailModal';
 import CartDrawer from './components/CartDrawer';
 import AdminLogin from './components/AdminLogin';
@@ -176,7 +177,7 @@ export default function App() {
     // 5. Deep Linking checking from URL params on load
     if (params.has('category')) {
       const categoryParam = params.get('category');
-      const validCategories = ['Summer', 'Sarees', 'Suits', 'Co-ords', 'All'];
+      const validCategories = ['Summer', 'Sarees', 'Suits', 'Co-ords', 'Velnora', 'All'];
       const matched = validCategories.find(c => c.toLowerCase() === categoryParam.toLowerCase());
       if (matched) {
         setSelectedCategory(matched);
@@ -694,6 +695,15 @@ export default function App() {
 
                   {/* Trend Translation Section */}
                   <TrendTranslation onSignInClick={() => setIsAuthModalOpen(true)} />
+
+                  {/* Velnora Collection Section */}
+                  <VelnoraCollection 
+                    products={products} 
+                    onProductClick={(p) => {
+                      window.history.pushState(null, '', `?product=${p.id}`);
+                      setActiveProductId(p.id);
+                    }} 
+                  />
 
                   {/* Category Banners Showcase (Examples of each category on main page) */}
                   <section style={{ padding: '8rem 0', backgroundColor: 'var(--bg-primary)' }}>

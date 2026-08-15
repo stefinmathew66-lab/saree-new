@@ -246,9 +246,93 @@ export const defaultProducts = [
         text: "The print is so vibrant and beautiful. The mulberry silk feel is extremely premium.",
         size: "S",
         images: [
-          "images/coord_set_detail.webp",
+          "images/coord_set.webp",
           "images/coord_set.webp"
         ]
+      }
+    ]
+  },
+  {
+    id: "prod-9",
+    title: "Blue Floral Ruffle Dress",
+    category: "Velnora",
+    price: 1436,
+    description: "An elegant white high-neck maxi dress adorned with serene blue floral patterns, featuring tier details and a matching self-tie waist belt.",
+    material: "Premium Linen-Cotton Blend",
+    zari: "None",
+    care: "Gentle machine wash or dry clean.",
+    stock: 8,
+    image: "velnora_blue_floral_dress.jpg",
+    detailImage: "velnora_blue_floral_dress.jpg",
+    altText: "White tiered maxi dress with blue floral print",
+    detailAltText: "Close up of blue floral design details",
+    featured: true,
+    sizes: ["XS", "S", "M", "L", "XL"],
+    reviews: [
+      {
+        id: "r9-1",
+        author: "K***i",
+        rating: 5.0,
+        date: "14 Aug 2026",
+        text: "Incredibly elegant, fabric is light yet high quality. Perfect summer statement.",
+        size: "S",
+        images: []
+      }
+    ]
+  },
+  {
+    id: "prod-10",
+    title: "Polka Dot Smocked Top",
+    category: "Velnora",
+    price: 790,
+    description: "A chic long-sleeved cream top patterned with neat black polka dots, featuring a soft bell-sleeve finish and form-fitting bodice.",
+    material: "Soft Crepe Chiffon",
+    zari: "None",
+    care: "Gentle hand wash. Hang to dry.",
+    stock: 12,
+    image: "velnora_polka_dot_top.jpg",
+    detailImage: "velnora_polka_dot_top.jpg",
+    altText: "Cream long-sleeved top with black polka dots",
+    detailAltText: "Polka dot sleeve detail",
+    featured: true,
+    sizes: ["S", "M", "L"],
+    reviews: [
+      {
+        id: "r10-1",
+        author: "A***i",
+        rating: 4.7,
+        date: "11 Aug 2026",
+        text: "Looks amazing with a black skirt or trousers. Very breathable fabric.",
+        size: "M",
+        images: []
+      }
+    ]
+  },
+  {
+    id: "prod-11",
+    title: "Embroidered Yellow Dress",
+    category: "Velnora",
+    price: 891,
+    description: "A lively sleeveless yellow mini dress crafted with elaborate lace floral embroidery throughout, offering an elevated cocktail silhouette.",
+    material: "Embroidered Floral Lace & Cotton Lining",
+    zari: "None",
+    care: "Dry clean recommended.",
+    stock: 6,
+    image: "velnora_yellow_dress.jpg",
+    detailImage: "velnora_yellow_dress.jpg",
+    altText: "Sleeveless yellow embroidered lace mini dress",
+    detailAltText: "Detail view of yellow lace embroidery work",
+    featured: true,
+    sizes: ["XS", "S", "M", "L"],
+    reviews: [
+      {
+        id: "r11-1",
+        author: "R***a",
+        rating: 5.0,
+        date: "09 Aug 2026",
+        text: "The embroidery is so delicate and beautiful. Color is exactly as pictured.",
+        size: "S",
+        images: []
       }
     ]
   }
