@@ -12,7 +12,8 @@ import {
   ChevronUp, 
   ChevronRight, 
   Ruler,
-  Star
+  Star,
+  PenLine
 } from 'lucide-react';
 
 export default function ProductDetailView({ product, onBack, onAddToCart, allProducts }) {
@@ -21,12 +22,24 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
   const [isAboutOpen, setIsAboutOpen] = useState(true);
   const [isPolicyOpen, setIsPolicyOpen] = useState(false);
   const [isWishlisted, setIsWishlisted] = useState(false);
+  const [isReviewFormOpen, setIsReviewFormOpen] = useState(false);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewHoverRating, setReviewHoverRating] = useState(0);
+  const [reviewText, setReviewText] = useState('');
+  const [reviewName, setReviewName] = useState('');
+  const [reviewSizeBought, setReviewSizeBought] = useState('');
+  const [userReviews, setUserReviews] = useState([]);
 
   // Scroll to top on product change
   useEffect(() => {
     window.scrollTo(0, 0);
     setSelectedSize('');
     setActiveImageIndex(0);
+    setIsReviewFormOpen(false);
+    setReviewRating(0);
+    setReviewText('');
+    setReviewName('');
+    setReviewSizeBought('');
   }, [product]);
 
   if (!product) return null;
@@ -59,6 +72,48 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
       images: []
     }
   ];
+
+  // Combine default + user-submitted reviews
+  const allReviews = [...reviews, ...userReviews];
+
+  const handleSubmitReview = () => {
+    if (reviewRating === 0) {
+      alert("Please select a star rating.");
+      return;
+    }
+    if (!reviewText.trim()) {
+      alert("Please write your review.");
+      return;
+    }
+    const now = new Date();
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const dateStr = `${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    
+    // Anonymize name: show first char + *** + last char
+    const displayName = reviewName.trim() 
+      ? (reviewName.trim().length <= 2 
+          ? reviewName.trim() 
+          : `${reviewName.trim()[0]}***${reviewName.trim()[reviewName.trim().length - 1]}`)
+      : 'Guest';
+
+    const newReview = {
+      id: `user-rev-${Date.now()}`,
+      author: displayName,
+      rating: reviewRating,
+      date: dateStr,
+      text: reviewText.trim(),
+      size: reviewSizeBought || 'N/A',
+      images: []
+    };
+
+    setUserReviews(prev => [...prev, newReview]);
+    setIsReviewFormOpen(false);
+    setReviewRating(0);
+    setReviewHoverRating(0);
+    setReviewText('');
+    setReviewName('');
+    setReviewSizeBought('');
+  };
 
   const handleAddToBag = () => {
     if (productSizes.length > 0 && !selectedSize && !productSizes.includes("Standard")) {
@@ -517,7 +572,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
               color: '#111111',
               marginBottom: '1rem'
             }}>
-              REVIEWS ({reviews.length})
+              REVIEWS ({allReviews.length})
             </h3>
 
             {/* Horizontal Scroll list of review photos */}
@@ -530,7 +585,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
               scrollbarWidth: 'none',
               msOverflowStyle: 'none'
             }} className="horizontal-scroll-hide">
-              {reviews.flatMap(r => r.images || []).map((imgUrl, i) => (
+              {allReviews.flatMap(r => r.images || []).map((imgUrl, i) => (
                 <img 
                   key={i} 
                   src={imgUrl} 
@@ -549,7 +604,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
 
             {/* Review Cards list */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              {reviews.map((rev) => (
+              {allReviews.map((rev) => (
                 <div 
                   key={rev.id || rev.author}
                   style={{
@@ -586,24 +641,207 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
               ))}
             </div>
 
-            <button 
-              onClick={() => alert("Showing all guest verification reviews…")}
-              style={{
-                width: '100%',
-                padding: '0.75rem',
-                border: '1px solid #111111',
-                borderRadius: '8px',
-                backgroundColor: 'transparent',
-                fontWeight: '700',
-                fontSize: '0.8rem',
-                cursor: 'pointer',
-                marginTop: '1.25rem',
-                fontFamily: 'var(--font-sans)',
-                outline: 'none'
-              }}
-            >
-              See All Reviews
-            </button>
+            {/* Actions: See All & Write Review */}
+            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem' }}>
+              <button 
+                onClick={() => alert("Showing all guest verification reviews…")}
+                style={{
+                  flex: 1,
+                  padding: '0.75rem',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  backgroundColor: 'transparent',
+                  fontWeight: '600',
+                  fontSize: '0.8rem',
+                  cursor: 'pointer',
+                  fontFamily: 'var(--font-sans)',
+                  outline: 'none',
+                  color: 'var(--text-secondary)'
+                }}
+              >
+                See All Reviews
+              </button>
+              
+              <button 
+                onClick={() => setIsReviewFormOpen(!isReviewFormOpen)}
+                style={{
+                  flex: 1,
+                  padding: '0.75rem',
+                  border: '1px solid #111111',
+                  borderRadius: '8px',
+                  backgroundColor: '#111111',
+                  color: '#ffffff',
+                  fontWeight: '600',
+                  fontSize: '0.8rem',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.4rem',
+                  fontFamily: 'var(--font-sans)',
+                  outline: 'none'
+                }}
+              >
+                <PenLine size={14} />
+                Write Review
+              </button>
+            </div>
+
+            {/* COLLAPSIBLE ADD REVIEW FORM */}
+            {isReviewFormOpen && (
+              <div style={{
+                marginTop: '1.5rem',
+                padding: '1.25rem',
+                border: '1px solid #eeeeee',
+                borderRadius: '10px',
+                backgroundColor: '#fafafa'
+              }}>
+                <h4 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '1rem', color: '#111111', fontFamily: 'var(--font-sans)' }}>
+                  Share your experience
+                </h4>
+                
+                {/* Rating selection (Stars) */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <span style={{ display: 'block', fontSize: '0.72rem', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                    YOUR RATING *
+                  </span>
+                  <div style={{ display: 'flex', gap: '0.35rem' }}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setReviewRating(star)}
+                        onMouseEnter={() => setReviewHoverRating(star)}
+                        onMouseLeave={() => setReviewHoverRating(0)}
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          cursor: 'pointer',
+                          padding: 0,
+                          color: star <= (reviewHoverRating || reviewRating) ? '#fbbf24' : '#e5e7eb'
+                        }}
+                      >
+                        <Star size={20} fill={star <= (reviewHoverRating || reviewRating) ? '#fbbf24' : 'none'} />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Name */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <label htmlFor="rev-name" style={{ display: 'block', fontSize: '0.72rem', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                    YOUR NAME
+                  </label>
+                  <input 
+                    id="rev-name"
+                    type="text" 
+                    placeholder="e.g. Priya Sharma" 
+                    value={reviewName}
+                    onChange={(e) => setReviewName(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #dddddd',
+                      fontSize: '0.8rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff'
+                    }}
+                  />
+                </div>
+
+                {/* Size Bought Selection */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <label htmlFor="rev-size" style={{ display: 'block', fontSize: '0.72rem', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                    SIZE BOUGHT
+                  </label>
+                  <select
+                    id="rev-size"
+                    value={reviewSizeBought}
+                    onChange={(e) => setReviewSizeBought(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #dddddd',
+                      fontSize: '0.8rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      height: '36px'
+                    }}
+                  >
+                    <option value="">Select size</option>
+                    {productSizes.filter(s => s !== "Standard").map(s => (
+                      <option key={s} value={s}>{s}</option>
+                    ))}
+                    {productSizes.includes("Standard") && (
+                      <option value="Standard">Standard Size</option>
+                    )}
+                  </select>
+                </div>
+
+                {/* Comments Textarea */}
+                <div style={{ marginBottom: '1.25rem' }}>
+                  <label htmlFor="rev-text" style={{ display: 'block', fontSize: '0.72rem', fontWeight: '600', color: 'var(--text-secondary)', marginBottom: '0.4rem' }}>
+                    REVIEW COMMENTS *
+                  </label>
+                  <textarea 
+                    id="rev-text"
+                    rows="3" 
+                    placeholder="Describe product quality, details, or shopping experience..." 
+                    value={reviewText}
+                    onChange={(e) => setReviewText(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      border: '1px solid #dddddd',
+                      fontSize: '0.8rem',
+                      outline: 'none',
+                      backgroundColor: '#ffffff',
+                      resize: 'vertical',
+                      fontFamily: 'var(--font-sans)'
+                    }}
+                  />
+                </div>
+
+                {/* Actions */}
+                <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                  <button 
+                    type="button" 
+                    onClick={() => setIsReviewFormOpen(false)}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      border: '1px solid #dddddd',
+                      borderRadius: '6px',
+                      backgroundColor: 'transparent',
+                      fontSize: '0.75rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      color: 'var(--text-secondary)'
+                    }}
+                  >
+                    Cancel
+                  </button>
+                  <button 
+                    type="button" 
+                    onClick={handleSubmitReview}
+                    style={{
+                      padding: '0.5rem 1rem',
+                      border: 'none',
+                      borderRadius: '6px',
+                      backgroundColor: '#ffb200',
+                      color: '#ffffff',
+                      fontSize: '0.75rem',
+                      fontWeight: '700',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              </div>
+            )}
           </section>
 
           {/* 8. RECOMMENDED "FOR YOU" SECTION */}
