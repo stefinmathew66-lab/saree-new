@@ -116,15 +116,45 @@ export default function Navbar({
           >
             <div 
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: '1.9rem',
-                fontWeight: '700',
-                letterSpacing: '-1px',
+                fontFamily: "'Cormorant Garamond', 'Bodoni Moda', serif",
+                fontSize: '2.5rem',
+                fontWeight: '500',
                 color: 'var(--text-primary)',
-                textTransform: 'lowercase'
+                textTransform: 'lowercase',
+                display: 'inline-flex',
+                alignItems: 'baseline',
+                position: 'relative',
+                lineHeight: 1,
+                userSelect: 'none',
+                letterSpacing: '0.5px'
               }}
             >
-              velnora
+              <span>v</span>
+              <span>e</span>
+              <span style={{ position: 'relative', display: 'inline-block' }}>
+                l
+                <svg 
+                  style={{
+                    position: 'absolute',
+                    left: '-2.15rem',
+                    bottom: '-0.38rem',
+                    width: '2.5rem',
+                    height: '0.65rem',
+                    pointerEvents: 'none'
+                  }}
+                  viewBox="0 0 100 30"
+                  fill="none"
+                >
+                  <path 
+                    d="M 90 2 C 70 12, 45 18, 25 18 C 10 18, 2 13, 0 8 C 0 5, 2 3, 5 5 C 8 8, 16 12, 28 12 C 45 12, 70 8, 90 2" 
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+              <span>n</span>
+              <span>o</span>
+              <span>r</span>
+              <span>a</span>
             </div>
           </div>
 
