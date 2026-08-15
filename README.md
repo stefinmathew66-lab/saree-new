@@ -13,6 +13,12 @@ Welcome to **Velnora**, a state-of-the-art, premium e-commerce web application d
 * **Interactive Cart Drawer**: A slide-out panel allowing users to adjust quantities, see instant subtotal updates, and view free shipping progress bars.
 * **Quick Detail Modal**: Clicking on products triggers a rich overlay modal with size selectors, detailed descriptions, and image zooming.
 
+### 🔔 Custom Notification System (Toasts & Alerts)
+* **Interactive Toast Stack**: Floating glassmorphic notifications with slide-in animations. Features specific color-coded levels: success (emerald/rose-gold), warning (amber), error (sunset red), and info (blue) with custom Lucide icons and countdown timeline progress bars.
+* **Themed Modal Dialogs**: Standard blocking alerts are replaced with elegant, centered overlay cards featuring blur backdrops and premium action buttons.
+* **Robust Global Interception**: Overrides the native browser `window.alert()` to guarantee consistent, high-end styling even for unmigrated alerts or console-triggered scripts.
+* **Dual-Theme Adaptive**: Automatically matches the active theme — whether using the primary Ivory style or the dark Midnight Lounge aesthetic.
+
 ### 🛡️ Admin Suite
 * **Secure Login**: Dedicated login panel for site administrators.
 * **Interactive Dashboard**: Control panel displaying total sales, product counts, and active promotions.
@@ -50,6 +56,8 @@ Welcome to **Velnora**, a state-of-the-art, premium e-commerce web application d
 │   │   ├── FreshDrops.jsx      # New arrivals grid & campaign banner
 │   │   ├── Hero.jsx            # Slideshow header & Freedom Sale banner
 │   │   ├── Navbar.jsx          # Header navigation, search, & wishlist
+│   │   ├── NotificationProvider.jsx # Custom themed toast & alert modal context provider
+│   │   ├── Notification.css    # Responsive toast and alert styles (Ivory / Midnight Lounge)
 │   │   ├── ProductDetailView.jsx# Deep-dive product details and reviews
 │   │   ├── SpecialOffers.jsx   # Interactive coupon badges
 │   │   └── WelcomePopup.jsx    # First-visit promotional trigger
@@ -57,7 +65,7 @@ Welcome to **Velnora**, a state-of-the-art, premium e-commerce web application d
 │   │   └── defaultProducts.js  # Sample luxury inventory data
 │   ├── App.jsx                 # Main state coordinator & view router
 │   ├── index.css               # Global CSS variables, reset, & keyframes
-│   └── main.jsx                # React application entry point
+│   └── main.jsx                # React application entry point (bootstraps NotificationProvider)
 ├── package.json                # Project dependencies and script runner
 └── vite.config.js              # Vite compiler configurations
 ```
