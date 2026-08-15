@@ -105,13 +105,7 @@ export default function App() {
     }
   }, [atmosphere]);
 
-  // Contact Form States
-  const [contactName, setContactName] = useState('');
-  const [contactEmail, setContactEmail] = useState('');
-  const [contactPhone, setContactPhone] = useState('');
-  const [contactSubject, setContactSubject] = useState('General Consultation');
-  const [contactMessage, setContactMessage] = useState('');
-  const [contactSuccess, setContactSuccess] = useState(false);
+
 
   // Load state from localStorage on mount
   useEffect(() => {
@@ -523,45 +517,6 @@ export default function App() {
     saveCart([]);
   };
 
-  // Contact Inquiry Submission
-  const handleContactSubmit = (e) => {
-    e.preventDefault();
-    if (!contactName || !contactEmail || !contactPhone || !contactMessage) {
-      alert("Please complete the required details before sending.");
-      return;
-    }
-
-    const newInquiry = {
-      id: `INQ-${Date.now()}`,
-      name: contactName,
-      email: contactEmail,
-      phone: contactPhone,
-      subject: contactSubject,
-      message: contactMessage,
-      date: new Date().toLocaleString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    };
-
-    const updatedInquiries = [newInquiry, ...inquiries];
-    setInquiries(updatedInquiries);
-    localStorage.setItem('velnora_inquiries', JSON.stringify(updatedInquiries));
-
-    setContactSuccess(true);
-    setContactName('');
-    setContactEmail('');
-    setContactPhone('');
-    setContactMessage('');
-    setContactSubject('General Consultation');
-
-    setTimeout(() => {
-      setContactSuccess(false);
-    }, 5000);
-  };
 
   // Admin Dashboard Hooks
   const handleAdminLogin = () => {
@@ -916,123 +871,7 @@ export default function App() {
                         </div>
                       </div>
                     </div>
-                  </section>
-
-                  {/* Contact / Consultation Booking Section */}
-                  <section id="contact" style={{ padding: '8rem 0', backgroundColor: 'var(--bg-primary)' }}>
-                    <div className="container">
-                      <div className="contact-layout">
-                        
-                        <div className="reveal reveal-left">
-                          <span className="uppercase-track text-gold" style={{ display: 'block', marginBottom: '0.75rem' }}>
-                            VISIT OUR STUDIO
-                          </span>
-                          <h2 style={{ fontSize: '3rem', fontFamily: 'var(--font-serif)', marginBottom: '1.5rem', lineHeight: '1.15' }}>
-                            Book a Private <br />
-                            Fitting Consultation
-                          </h2>
-                          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.8', marginBottom: '2.5rem' }}>
-                            Experience our collection in a private setting. Let our design consultants guide you through the weaves, history, and styling of our heritage sarees, bridal trousseaus, and customized commissions.
-                          </p>
-
-                          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                            <div>
-                              <h5 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-gold-dark)', marginBottom: '0.25rem' }}>Flagship Atelier</h5>
-                              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Bypass Road, Dungarpur, Rajasthan</p>
-                            </div>
-                            <div>
-                              <h5 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-gold-dark)', marginBottom: '0.25rem' }}>Hours of Experience</h5>
-                              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Tuesday – Sunday: 11:00 AM – 7:00 PM (By Appointment Only)</p>
-                            </div>
-                            <div>
-                              <h5 style={{ fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--accent-gold-dark)', marginBottom: '0.25rem' }}>Direct Line</h5>
-                              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>concierge@thevelnora.com | +91 86192 99237</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="reveal reveal-right contact-form-card" style={{ padding: '3rem', border: '1px solid var(--border-color)', background: 'var(--bg-secondary)', borderRadius: '4px' }}>
-                          <h3 style={{ fontSize: '1.75rem', fontFamily: 'var(--font-serif)', marginBottom: '2rem' }}>Request Appointment</h3>
-                          {contactSuccess ? (
-                            <div style={{ textAlign: 'center', padding: '3rem 0' }}>
-                              <h4 style={{ fontFamily: 'var(--font-serif)', color: 'var(--accent-gold-dark)', fontSize: '1.5rem', marginBottom: '0.5rem' }}>Appointment Requested</h4>
-                              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Our concierge will reach out to you within 24 hours to confirm your reservation details.</p>
-                            </div>
-                          ) : (
-                            <form onSubmit={handleContactSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
-                              <div className="form-group">
-                                <label className="form-label">Full Name *</label>
-                                <input 
-                                  type="text" 
-                                  className="form-input" 
-                                  placeholder="Aarav Sharma" 
-                                  required 
-                                  value={contactName}
-                                  onChange={(e) => setContactName(e.target.value)}
-                                />
-                              </div>
-
-                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                <div className="form-group">
-                                  <label className="form-label">Email *</label>
-                                  <input 
-                                    type="email" 
-                                    className="form-input" 
-                                    placeholder="aarav@example.com" 
-                                    required 
-                                    value={contactEmail}
-                                    onChange={(e) => setContactEmail(e.target.value)}
-                                  />
-                                </div>
-                                <div className="form-group">
-                                  <label className="form-label">Phone *</label>
-                                  <input 
-                                    type="tel" 
-                                    className="form-input" 
-                                    placeholder="+91 98765 43210" 
-                                    required 
-                                    value={contactPhone}
-                                    onChange={(e) => setContactPhone(e.target.value)}
-                                  />
-                                </div>
-                              </div>
-
-                              <div className="form-group">
-                                <label className="form-label">Consultation Purpose</label>
-                                <select 
-                                  className="admin-select"
-                                  value={contactSubject}
-                                  onChange={(e) => setContactSubject(e.target.value)}
-                                >
-                                  <option value="General Consultation">General Consultation</option>
-                                  <option value="Bridal Collection Inquiry">Bridal Trousseau Selection</option>
-                                  <option value="Custom Motif Weave Order">Custom Motif Weave Order</option>
-                                  <option value="Corporate Handloom Gifting">Corporate Gifting Inquiry</option>
-                                </select>
-                              </div>
-
-                              <div className="form-group" style={{ marginBottom: '2rem' }}>
-                                <label className="form-label">Message Details *</label>
-                                <textarea 
-                                  className="form-input" 
-                                  rows="4" 
-                                  placeholder="Please describe your color preferences, wedding dates, or design expectations..." 
-                                  required
-                                  value={contactMessage}
-                                  onChange={(e) => setContactMessage(e.target.value)}
-                                />
-                              </div>
-
-                              <button type="submit" className="btn-premium" style={{ width: '100%' }}>
-                                Submit Request
-                              </button>
-                            </form>
-                          )}
-                        </div>
-
-                      </div>
-                    </div>
-                  </section>
+                        </section>
                 </>
               ) : (
                 /* DEDICATED CATEGORY PAGE */
@@ -1165,7 +1004,7 @@ export default function App() {
                       <ul className="footer-links">
                         <li className="footer-link" onClick={() => { setSelectedCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Online Boutique</li>
                         <li className="footer-link" onClick={() => { setSelectedCategory('All'); setTimeout(() => { const el = document.getElementById('heritage'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150); }}>Heritage Page</li>
-                        <li className="footer-link" onClick={() => { setSelectedCategory('All'); setTimeout(() => { const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150); }}>Book Fitting</li>
+
                       </ul>
                     </div>
 
@@ -1258,7 +1097,7 @@ export default function App() {
                       <ul className="footer-links">
                         <li className="footer-link" onClick={() => { setCurrentView('storefront'); setSelectedCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>Online Boutique</li>
                         <li className="footer-link" onClick={() => { setCurrentView('storefront'); setSelectedCategory('All'); setTimeout(() => { const el = document.getElementById('heritage'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150); }}>Heritage Page</li>
-                        <li className="footer-link" onClick={() => { setCurrentView('storefront'); setSelectedCategory('All'); setTimeout(() => { const el = document.getElementById('contact'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150); }}>Book Fitting</li>
+
                       </ul>
                     </div>
 

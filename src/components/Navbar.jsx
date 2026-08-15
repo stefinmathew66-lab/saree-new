@@ -351,15 +351,9 @@ export default function Navbar({
             </button>
             <button 
               onClick={() => handleSectionNav('heritage')} 
-              style={{ background: 'none', border: 'none', textAlign: 'left', width: '100%', fontSize: '1rem', letterSpacing: '-0.2px', cursor: 'pointer', fontWeight: 500, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.4rem' }}
-            >
-              Heritage
-            </button>
-            <button 
-              onClick={() => handleSectionNav('contact')} 
               style={{ background: 'none', border: 'none', textAlign: 'left', width: '100%', fontSize: '1rem', letterSpacing: '-0.2px', cursor: 'pointer', fontWeight: 500, color: 'var(--text-primary)', paddingBottom: '0.4rem' }}
             >
-              Contact
+              Heritage
             </button>
           </div>
         </div>
