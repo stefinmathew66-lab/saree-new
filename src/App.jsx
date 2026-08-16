@@ -811,138 +811,214 @@ export default function App() {
                     onToggleWishlist={handleToggleWishlist}
                   />
 
-                  {/* Category Banners Showcase (Examples of each category on main page) */}
-                  <section style={{ padding: '8rem 0', backgroundColor: 'var(--bg-primary)' }}>
-                    <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '8rem' }}>
+                  {/* Curated Designer Editions Lookbook Grid */}
+                  <section className="designer-lookbook-section" style={{ padding: '6rem 0', backgroundColor: 'var(--bg-primary)' }}>
+                    <div className="container">
                       
-                      <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <span className="uppercase-track text-gold" style={{ display: 'block', marginBottom: '0.75rem' }}>THE SIGNATURE COLLECTIONS</span>
-                        <h2 style={{ fontSize: '3rem', fontFamily: 'var(--font-serif)' }}>Curated Designer Editions</h2>
+                      <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+                        <span className="uppercase-track text-gold" style={{ display: 'block', marginBottom: '0.75rem', fontSize: '0.75rem' }}>
+                          THE SIGNATURE COLLECTIONS
+                        </span>
+                        <h2 className="lookbook-main-title">
+                          Curated Designer Lookbook
+                        </h2>
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', maxWidth: '540px', margin: '0.75rem auto 0 auto', lineHeight: '1.6' }}>
+                          Discover handcrafted masterpieces, breezy resort fabrics, and contemporary coordinates tailored by luxury artisans.
+                        </p>
                       </div>
 
-                      {[
-                        {
-                          id: 'Summer',
-                          title: 'Summer Collection',
-                          subtitle: 'Effortless Minimalist Silhouettes',
-                          desc: 'Breezy organic linens, sand tones, and lightweight slip dresses styled for warm days and effortless resort luxury.',
-                          images: ['images/summer_dress.webp', 'images/summer_dress_detail.webp'],
-                          action: 'EXPLORE SUMMER'
-                        },
-                        {
-                          id: 'Sarees',
-                          title: 'Heritage Sarees',
-                          subtitle: 'Artisanal Handlooms & Pure Zari',
-                          desc: 'Masterpieces woven in pure Kanchipuram and Banarasi silk, certified for purity, and detailed with metallic gold work.',
-                          images: [
-                            'images/silk_kanchipuram.webp', 
-                            'images/silk_kanchipuram_detail.webp', 
-                            'images/banarasi_pink.webp', 
-                            'images/banarasi_pink_detail.webp',
-                            'images/organza_mint.webp',
-                            'images/organza_mint_detail.webp'
-                          ],
-                          action: 'EXPLORE SAREES'
-                        },
-                        {
-                          id: 'Suits',
-                          title: 'Luxury Suits',
-                          subtitle: 'Ornate Traditional Suit Sets',
-                          desc: 'Gilded embroidery, pure mulberry silks, and sheer organza dupatta sets curated for luxury and traditional style.',
-                          images: ['images/suit_anarkali.webp', 'images/suit_anarkali_detail.webp'],
-                          action: 'EXPLORE SUITS'
-                        },
-                        {
-                          id: 'Co-ords',
-                          title: 'Printed Co-ord Sets',
-                          subtitle: 'Modern Silk Crepe Coordinates',
-                          desc: 'Contemporary matching sets featuring relaxed-fit camp collar shirts and wide-leg trousers in flowing premium silk.',
-                          images: ['images/coord_set.webp', 'images/coord_set_detail.webp'],
-                          action: 'EXPLORE CO-ORDS'
-                        }
-                      ].map((sec, idx) => (
-                        <div 
-                          key={sec.id}
-                          className="category-showcase-row"
-                          style={{
-                            display: 'grid',
-                            gridTemplateColumns: '1fr 1fr',
-                            gap: '4rem',
-                            alignItems: 'center'
-                          }}
-                        >
-                          {/* Image side */}
+                      <div className="lookbook-grid">
+                        {[
+                          {
+                            id: 'Summer',
+                            num: '01',
+                            tag: 'THE RESORT EDIT',
+                            title: 'Summer Collection',
+                            desc: 'Breezy organic linens and minimal slip dresses.',
+                            img: 'images/summer_dress.webp',
+                            badge: 'Resort Chic'
+                          },
+                          {
+                            id: 'Sarees',
+                            num: '02',
+                            tag: 'THE ROYAL WEAVES',
+                            title: 'Heritage Sarees',
+                            desc: 'Certified Kanchipuram and Banarasi handlooms.',
+                            img: 'images/silk_kanchipuram.webp',
+                            badge: '100% Authentic'
+                          },
+                          {
+                            id: 'Suits',
+                            num: '03',
+                            tag: 'THE MODERN CLASSIC',
+                            title: 'Luxury Suits',
+                            desc: 'Mulberry silks and embroidered organza dupatta sets.',
+                            img: 'images/suit_anarkali.webp',
+                            badge: 'Signature Silk'
+                          },
+                          {
+                            id: 'Co-ords',
+                            num: '04',
+                            tag: 'THE STATEMENT CREPE',
+                            title: 'Printed Co-ords',
+                            desc: 'Relaxed premium coordinates with camp collar cuts.',
+                            img: 'images/coord_set.webp',
+                            badge: 'Hot Seller'
+                          }
+                        ].map((item) => (
                           <div 
-                            className="showcase-image-wrapper"
-                            style={{ order: idx % 2 === 0 ? 0 : 1 }}
+                            key={item.id}
+                            className="lookbook-card"
+                            onClick={() => { setSelectedCategory(item.id); setSelectedSubCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                           >
-                            <div 
-                              className="showcase-image-container"
-                              onClick={() => { setSelectedCategory(sec.id); setSelectedSubCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                              style={{
-                                cursor: 'pointer',
-                                overflow: 'hidden',
-                                position: 'relative',
-                                aspectRatio: '1/1',
-                                maxHeight: '520px'
-                              }}
-                            >
-                              {sec.images.map((imgUrl, iIndex) => (
-                                <img 
-                                  key={imgUrl}
-                                  src={imgUrl} 
-                                  alt={sec.title} 
-                                  style={{ 
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                    objectFit: 'cover',
-                                    opacity: showcaseSlideIndices[sec.id] === iIndex ? 1 : 0,
-                                    transition: 'opacity 1.2s ease-in-out',
-                                    zIndex: showcaseSlideIndices[sec.id] === iIndex ? 2 : 1,
-                                    transform: 'scale(1.01)'
-                                  }} 
-                                />
-                              ))}
-                              <div style={{
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                backgroundColor: 'rgba(0,0,0,0.1)',
-                                transition: 'background-color 0.4s ease',
-                                zIndex: 3
-                              }} className="showcase-img-overlay" />
+                            <div className="lookbook-image-wrapper">
+                              <img src={item.img} alt={item.title} className="lookbook-img" />
+                              <span className="lookbook-card-badge">{item.badge}</span>
+                              <div className="lookbook-card-overlay">
+                                <span className="lookbook-num">{item.num}</span>
+                                <span className="lookbook-tag">{item.tag}</span>
+                                <h3 className="lookbook-title">{item.title}</h3>
+                                <p className="lookbook-desc">{item.desc}</p>
+                                <button className="lookbook-action-btn">
+                                  SHOP EDIT
+                                </button>
+                              </div>
                             </div>
                           </div>
-
-                          {/* Text side */}
-                          <div style={{ textAlign: idx % 2 === 0 ? 'left' : 'right' }}>
-                            <span className="uppercase-track text-gold" style={{ fontSize: '0.7rem' }}>{sec.subtitle}</span>
-                            <h3 
-                              onClick={() => { setSelectedCategory(sec.id); setSelectedSubCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                              style={{ fontSize: '2.5rem', fontFamily: 'var(--font-serif)', marginTop: '0.5rem', marginBottom: '1.5rem', cursor: 'pointer' }}
-                            >
-                              {sec.title}
-                            </h3>
-                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: '1.7', marginBottom: '2.5rem', maxWidth: '480px', marginLeft: idx % 2 === 0 ? '0' : 'auto' }}>
-                              {sec.desc}
-                            </p>
-                            <button 
-                              className="btn-premium" 
-                              onClick={() => { setSelectedCategory(sec.id); setSelectedSubCategory('All'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                            >
-                              {sec.action}
-                            </button>
-                          </div>
-
-                        </div>
-                      ))}
+                        ))}
+                      </div>
 
                     </div>
+
+                    <style>{`
+                      .lookbook-main-title {
+                        font-size: 2.2rem;
+                        font-family: var(--font-serif);
+                        color: var(--text-primary);
+                      }
+                      .lookbook-grid {
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        gap: 1.5rem;
+                      }
+                      .lookbook-card {
+                        cursor: pointer;
+                        border-radius: 16px;
+                        overflow: hidden;
+                        border: 1px solid var(--border-color);
+                        background-color: var(--bg-secondary);
+                        box-shadow: var(--shadow-sm);
+                        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+                      }
+                      .lookbook-card:hover {
+                        transform: translateY(-4px);
+                        box-shadow: var(--shadow-md);
+                      }
+                      .lookbook-image-wrapper {
+                        position: relative;
+                        width: 100%;
+                        aspect-ratio: 4/5;
+                        overflow: hidden;
+                      }
+                      .lookbook-img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                      }
+                      .lookbook-card:hover .lookbook-img {
+                        transform: scale(1.04);
+                      }
+                      .lookbook-card-badge {
+                        position: absolute;
+                        top: 1rem;
+                        left: 1rem;
+                        z-index: 5;
+                        background-color: var(--accent-gold);
+                        color: var(--bg-primary);
+                        font-family: var(--font-sans);
+                        font-size: 0.625rem;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.08em;
+                        padding: 0.35rem 0.65rem;
+                        border-radius: 4px;
+                        box-shadow: var(--shadow-sm);
+                      }
+                      .lookbook-card-overlay {
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.05) 100%);
+                        z-index: 2;
+                        padding: 2rem;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: flex-end;
+                        align-items: flex-start;
+                        color: #ffffff;
+                      }
+                      .lookbook-num {
+                        font-family: var(--font-mono);
+                        font-size: 0.85rem;
+                        font-weight: 600;
+                        color: var(--accent-gold);
+                        margin-bottom: 0.25rem;
+                      }
+                      .lookbook-tag {
+                        font-family: var(--font-mono);
+                        font-size: 0.68rem;
+                        letter-spacing: 0.1em;
+                        text-transform: uppercase;
+                        opacity: 0.85;
+                        margin-bottom: 0.5rem;
+                      }
+                      .lookbook-title {
+                        font-family: var(--font-serif);
+                        font-size: 1.6rem;
+                        font-weight: 500;
+                        margin: 0 0 0.35rem 0;
+                        color: #ffffff;
+                      }
+                      .lookbook-desc {
+                        font-size: 0.8rem;
+                        line-height: 1.4;
+                        opacity: 0.9;
+                        margin: 0 0 1.25rem 0;
+                        max-width: 240px;
+                      }
+                      .lookbook-action-btn {
+                        background-color: #ffffff;
+                        color: #111111;
+                        border: none;
+                        padding: 0.55rem 1.25rem;
+                        font-size: 0.72rem;
+                        font-weight: 800;
+                        letter-spacing: 0.08em;
+                        text-transform: uppercase;
+                        cursor: pointer;
+                        transition: background-color 0.2s ease;
+                      }
+                      .lookbook-card:hover .lookbook-action-btn {
+                        background-color: var(--accent-gold);
+                        color: var(--bg-primary);
+                      }
+
+                      @media (min-width: 768px) {
+                        .lookbook-grid {
+                          grid-template-columns: repeat(2, 1fr);
+                          gap: 2rem;
+                        }
+                        .lookbook-main-title {
+                          font-size: 3rem;
+                        }
+                      }
+                      @media (min-width: 1024px) {
+                        .lookbook-grid {
+                          grid-template-columns: repeat(4, 1fr);
+                          gap: 1.5rem;
+                        }
+                      }
+                    `}</style>
                   </section>
 
                   {/* Heritage Brand Philosophy Section */}
