@@ -26,5 +26,4 @@ dist-ssr
 # Environment configurations
 .env
 .env.*
-!.env.example
 
