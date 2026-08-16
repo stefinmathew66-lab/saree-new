@@ -1,16 +1,15 @@
 /**
- * Velnora Studio - Razorpay Integration Backend Demo Server
+ * Velnora Studio - Razorpay Integration Backend Server
  * 
- * This is an optional backend script showing how to:
- * 1. Create a secure Order ID on your server using the Razorpay API.
+ * Secure backend server to:
+ * 1. Create secure Order IDs on your server using the Razorpay API.
  * 2. Securely verify payment signatures using SHA256 HMAC after capture.
  * 
  * Setup:
  * 1. Initialize npm and install dependencies:
  *    npm install express cors dotenv
- *    (For official SDK: npm install razorpay)
  * 2. Run the server:
- *    node scripts/razorpay-server-demo.js
+ *    node scripts/razorpay-server.js
  */
 
 const express = require('express');
