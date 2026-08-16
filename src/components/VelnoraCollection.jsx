@@ -77,13 +77,25 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
         </div>
       </div>
 
-      {/* Product Row / Grid (3 items wide) */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
-        gap: '0.6rem',
-        marginBottom: '1.5rem'
-      }}>
+      {/* Product Row / Scroll Container (Scrollable Horizontally & Vertically on mobile/desktop) */}
+      <div 
+        className="velnora-products-scroll-container"
+        style={{
+          display: 'grid',
+          gridAutoFlow: 'column',
+          gridTemplateRows: velnoraProducts.length > 6 ? 'repeat(2, auto)' : 'repeat(1, auto)',
+          gridAutoColumns: 'minmax(130px, 155px)',
+          gap: '0.75rem 0.65rem',
+          overflowX: 'auto',
+          overflowY: 'auto',
+          maxHeight: velnoraProducts.length > 6 ? '540px' : 'none',
+          paddingBottom: '0.75rem',
+          marginBottom: '1.5rem',
+          WebkitOverflowScrolling: 'touch',
+          scrollSnapType: 'x mandatory',
+          scrollbarWidth: 'thin'
+        }}
+      >
         {velnoraProducts.map((product) => {
           // Calculate simulated original price and discount
           const hasDiscount = product.id === 'prod-9' || product.id === 'prod-11';
@@ -98,7 +110,9 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
                 cursor: 'pointer',
                 display: 'flex',
                 flexDirection: 'column',
-                position: 'relative'
+                position: 'relative',
+                scrollSnapAlign: 'start',
+                width: '100%'
               }}
             >
               {/* Product Image Frame */}
@@ -163,6 +177,28 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
           );
         })}
       </div>
+
+      <style>{`
+        .velnora-products-scroll-container {
+          -webkit-overflow-scrolling: touch;
+          scroll-behavior: smooth;
+        }
+        .velnora-products-scroll-container::-webkit-scrollbar {
+          height: 5px;
+          width: 5px;
+        }
+        .velnora-products-scroll-container::-webkit-scrollbar-track {
+          background: #f3f4f6;
+          border-radius: 4px;
+        }
+        .velnora-products-scroll-container::-webkit-scrollbar-thumb {
+          background: #d1d5db;
+          border-radius: 4px;
+        }
+        .velnora-products-scroll-container::-webkit-scrollbar-thumb:hover {
+          background: #9ca3af;
+        }
+      `}</style>
     </section>
   );
 }
