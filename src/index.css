@@ -2286,3 +2286,21 @@ body.theme-midnight .product-price-sale {
   }
 }
 
+/* Responsive Desktop Arrangement Fixes */
+@media (min-width: 768px) {
+  .categories-grid-section,
+  .velnora-section-wrapper,
+  .fresh-drops-section-wrapper,
+  .special-offers-section,
+  .blog-journal-section {
+    max-width: 1280px !important;
+    margin: 2.5rem auto !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    background-color: var(--bg-secondary) !important;
+    padding: 3rem !important;
+  }
+}
+
+

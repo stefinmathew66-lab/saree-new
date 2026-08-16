@@ -198,7 +198,7 @@ export default function BlogJournal({
 
   // Journal Grid Catalog List View
   return (
-    <section style={{ backgroundColor: 'var(--bg-primary)', padding: '5rem 0 8rem 0', minHeight: '85vh' }}>
+    <section className="blog-journal-section" style={{ backgroundColor: 'var(--bg-primary)', padding: '5rem 0 8rem 0', minHeight: '85vh' }}>
       <div className="container">
         
         {/* Page Title */}

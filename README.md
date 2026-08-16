@@ -25,7 +25,7 @@ Welcome to **Velnora**, a state-of-the-art, premium e-commerce web application d
 * **Inventory Control**: Add new products (with categories, images, and pricing) or update existing catalogs in real-time.
 
 ### 🎨 Design & Interactions
-* **Responsive Layouts**: Designed first for premium mobile screens and optimized for desktop viewports.
+* **Mobile-First Optimization**: Designed primarily with a mobile-first philosophy for modern smartphones and touch screens. While fully compatible and responsive on desktop/laptop screens, the layout offers the most seamless, native-app-like experience on mobile.
 * **Smooth Micro-animations**: Subtle hover transitions, fade-in lists, rotating coupon badges, and loading states.
 * **Vibrant Styling**: Custom Vanilla CSS system with carefully selected typography (Bodoni Moda & Inter) and a warm coral/gold color palette.
 
