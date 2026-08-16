@@ -27,6 +27,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
   const [orderId, setOrderId] = useState('');
   const [giftWrap, setGiftWrap] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('online'); // 'online' or 'cod'
 
   // Checkout Form states
   const [name, setName] = useState('');
@@ -66,7 +67,7 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
     }
   };
 
-  const processSuccessfulPayment = (paymentDetails) => {
+  const processOrder = (paymentStatus, paymentId, method, rzpOrderId = '') => {
     const generatedId = `MS-${Math.floor(100000 + Math.random() * 900000)}`;
     const newOrder = {
       id: generatedId,
@@ -83,10 +84,11 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
       })),
       total: grandTotal,
       giftWrap: giftWrap ? 'Yes (Sandalwood Cedar Chest)' : 'No',
-      status: 'Paid',
-      paymentId: paymentDetails.razorpay_payment_id || 'simulated_payment',
-      paymentMethod: paymentDetails.method || 'Razorpay',
-      razorpayOrderId: paymentDetails.razorpay_order_id || '',
+      status: 'Pending',
+      paymentStatus: paymentStatus,
+      paymentId: paymentId,
+      paymentMethod: method,
+      razorpayOrderId: rzpOrderId,
       date: new Date().toLocaleDateString('en-IN', {
         year: 'numeric',
         month: 'long',
@@ -109,7 +111,17 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
     setAddress('');
     setCity('');
     setPostal('');
+    setPaymentMethod('online');
     setGiftWrap(false);
+  };
+
+  const processSuccessfulPayment = (paymentDetails) => {
+    processOrder(
+      'Paid',
+      paymentDetails.razorpay_payment_id || 'simulated_payment',
+      paymentDetails.method || 'Razorpay',
+      paymentDetails.razorpay_order_id || ''
+    );
   };
 
   const verifyBackendPayment = async (razorpayResponse) => {
@@ -200,6 +212,18 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
     }
 
     setIsSubmitting(true);
+
+    if (paymentMethod === 'cod') {
+      setTimeout(() => {
+        processOrder(
+          'Unpaid',
+          `cod_${Math.random().toString(36).substr(2, 9)}`,
+          'Cash on Delivery'
+        );
+        toast.success("Order placed successfully with Cash on Delivery!");
+      }, 1000);
+      return;
+    }
 
     const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_YOUR_KEY_ID_HERE';
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -434,6 +458,55 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                   />
                 </div>
               </div>
+
+              {/* Payment Method Selection */}
+              <div className="form-group" style={{ marginBottom: '1.5rem' }}>
+                <label className="form-label" style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, marginBottom: '0.6rem', color: 'var(--text-secondary)' }}>
+                  Select Payment Method
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+                  {/* Online Payment Option Card */}
+                  <div 
+                    onClick={() => setPaymentMethod('online')}
+                    style={{
+                      border: paymentMethod === 'online' ? '2px solid var(--accent-gold)' : '1px solid var(--border-color)',
+                      borderRadius: '8px',
+                      padding: '0.75rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.25rem',
+                      backgroundColor: paymentMethod === 'online' ? 'var(--bg-secondary)' : 'var(--bg-primary)',
+                      boxShadow: paymentMethod === 'online' ? 'var(--shadow-sm)' : 'none',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>Online Payment</span>
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-mute)' }}>UPI, Cards, Netbanking</span>
+                  </div>
+
+                  {/* Cash on Delivery Option Card */}
+                  <div 
+                    onClick={() => setPaymentMethod('cod')}
+                    style={{
+                      border: paymentMethod === 'cod' ? '2px solid var(--accent-gold)' : '1px solid var(--border-color)',
+                      borderRadius: '8px',
+                      padding: '0.75rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '0.25rem',
+                      backgroundColor: paymentMethod === 'cod' ? 'var(--bg-secondary)' : 'var(--bg-primary)',
+                      boxShadow: paymentMethod === 'cod' ? 'var(--shadow-sm)' : 'none',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-primary)' }}>Cash on Delivery</span>
+                    <span style={{ fontSize: '0.65rem', color: 'var(--text-mute)' }}>Pay in cash at delivery</span>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
             <div className="cart-footer">
@@ -443,7 +516,10 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
                 disabled={isSubmitting}
                 style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', borderRadius: '100px', opacity: isSubmitting ? 0.7 : 1, cursor: isSubmitting ? 'not-allowed' : 'pointer' }}
               >
-                {isSubmitting ? 'Securing Payment…' : 'Proceed to Secure Payment'}
+                {isSubmitting 
+                  ? (paymentMethod === 'cod' ? 'Placing Order…' : 'Securing Payment…') 
+                  : (paymentMethod === 'cod' ? 'Place Order via COD' : 'Proceed to Secure Payment')
+                }
                 {!isSubmitting && <ArrowRight size={14} aria-hidden="true" />}
               </button>
               <button

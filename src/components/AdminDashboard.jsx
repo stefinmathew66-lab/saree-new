@@ -333,7 +333,12 @@ export default function AdminDashboard({
                           <tr key={order.id}>
                             <td style={{ fontWeight: 600 }}>{order.id}</td>
                             <td>{order.customerName}</td>
-                            <td>₹{order.total.toLocaleString('en-IN')}</td>
+                            <td>
+                              <div>₹{order.total.toLocaleString('en-IN')}</div>
+                              <div style={{ fontSize: '0.625rem', color: 'var(--accent-gold-dark)', fontWeight: 500, marginTop: '0.1rem' }}>
+                                {order.paymentMethod === 'Cash on Delivery' ? 'COD' : 'Paid Online'}
+                              </div>
+                            </td>
                             <td>
                               <span className={`admin-badge-status status-${order.status.toLowerCase()}`}>
                                 {order.status}
@@ -524,7 +529,12 @@ export default function AdminDashboard({
                             </div>
                           )}
                         </td>
-                        <td style={{ fontWeight: 600 }}>₹{order.total.toLocaleString('en-IN')}</td>
+                        <td>
+                          <div style={{ fontWeight: 600 }}>₹{order.total.toLocaleString('en-IN')}</div>
+                          <div style={{ fontSize: '0.65rem', color: 'var(--accent-gold-dark)', fontWeight: 500, marginTop: '0.15rem' }}>
+                            {order.paymentMethod === 'Cash on Delivery' ? 'COD (Pay on Delivery)' : 'Paid Online'}
+                          </div>
+                        </td>
                         <td>
                           <span className={`admin-badge-status status-${order.status.toLowerCase()}`}>
                             {order.status}
