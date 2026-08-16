@@ -37,11 +37,11 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
         TREND TRANSLATION
       </h2>
 
-      {/* Responsive Grid: 4 columns on desktop, 2x2 on mobile */}
+      {/* 2-column Grid layout matching screenshot */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-        gap: '1.5rem 1.25rem',
+        gridTemplateColumns: 'repeat(2, 1fr)',
+        gap: '2.5rem 1.5rem',
         marginBottom: '2.5rem'
       }}>
         {trends.map((trend, index) => (
@@ -60,12 +60,12 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
             <div style={{
               width: '100%',
               aspectRatio: '3/4',
-              borderRadius: '16px',
+              borderRadius: '24px',
               overflow: 'hidden',
               backgroundColor: 'var(--bg-secondary)',
-              border: '1px solid var(--border-color)',
-              marginBottom: '0.75rem',
-              boxShadow: 'var(--shadow-sm)'
+              border: 'none',
+              marginBottom: '1rem',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.06)'
             }}>
               <img 
                 src={trend.image} 
@@ -74,11 +74,12 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
               />
             </div>
             <span style={{
-              fontSize: '0.95rem',
+              fontSize: '1.35rem',
               fontWeight: '700',
               textAlign: 'center',
               color: 'var(--text-primary)',
-              fontFamily: 'var(--font-sans)'
+              fontFamily: 'var(--font-sans)',
+              letterSpacing: '-0.3px'
             }}>
               {trend.label}
             </span>

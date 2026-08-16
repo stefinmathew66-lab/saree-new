@@ -1392,7 +1392,7 @@ export default function App() {
 
           {/* Floating Contact Options (WhatsApp + Instagram) */}
           {(currentView === 'storefront' || currentView === 'journal') && (
-            <FloatingContact />
+            <FloatingContact onGiftClick={() => setIsAuthModalOpen(true)} />
           )}
 
           {/* Welcome Offer Popup */}

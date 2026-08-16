@@ -150,3 +150,149 @@
     height: 18px;
   }
 }
+
+/* Floating Gift Widget (lookalike image coupon) */
+.floating-gift-widget {
+  position: fixed;
+  bottom: 2rem;
+  right: 6.5rem;
+  z-index: 998;
+  width: 96px;
+  height: 96px;
+  pointer-events: auto;
+  animation: giftWidgetBounce 3s infinite ease-in-out;
+}
+
+/* Close button at top right */
+.gift-widget-close {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  z-index: 10;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  border: 1px solid rgba(0,0,0,0.15);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666666;
+  transition: background-color 0.2s, color 0.2s;
+  outline: none;
+}
+
+.gift-widget-close:hover {
+  background-color: #f5f5f5;
+  color: #111111;
+}
+
+/* Circular Background container */
+.gift-widget-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  overflow: visible; /* Let the coupon tag overlap nicely */
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gift-widget-circle:hover {
+  transform: scale(1.06);
+}
+
+/* Background image inside circle */
+.gift-widget-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  filter: brightness(0.95);
+}
+
+/* Coupon Tag overlay card */
+.gift-widget-coupon-tag {
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 82px;
+  background-color: #f26955; /* brand coral */
+  border: 1.5px solid #ffffff;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(242, 105, 85, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0;
+  color: #ffffff;
+}
+
+.coupon-tag-header {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  margin-bottom: 2px;
+  opacity: 0.95;
+}
+
+.coupon-tag-rate {
+  font-size: 1.1rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.5px;
+}
+
+.coupon-tag-off {
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-top: 1px;
+}
+
+@keyframes giftWidgetBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .floating-gift-widget {
+    bottom: 1.5rem;
+    right: 5.25rem;
+    width: 82px;
+    height: 82px;
+  }
+  .gift-widget-circle {
+    width: 76px;
+    height: 76px;
+  }
+  .gift-widget-coupon-tag {
+    width: 70px;
+    bottom: -5px;
+    padding: 0.2rem 0;
+  }
+  .coupon-tag-header {
+    font-size: 0.48rem;
+  }
+  .coupon-tag-rate {
+    font-size: 0.95rem;
+  }
+  .coupon-tag-off {
+    font-size: 0.48rem;
+  }
+}
+
