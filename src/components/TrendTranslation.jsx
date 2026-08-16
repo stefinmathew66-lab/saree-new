@@ -21,31 +21,28 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
   ];
 
   return (
-    <section style={{
-      padding: '3rem 1.25rem 2rem 1.25rem',
-      backgroundColor: '#ffffff',
+    <section className="container" style={{
+      padding: '3.5rem 1.25rem 2.5rem 1.25rem',
       fontFamily: 'var(--font-sans)',
-      maxWidth: '480px',
-      margin: '0 auto'
     }}>
       <h2 style={{
-        fontSize: '1.25rem',
+        fontSize: '1.35rem',
         fontWeight: '800',
         textTransform: 'uppercase',
-        letterSpacing: '0.02em',
-        color: '#111111',
+        letterSpacing: '0.04em',
+        color: 'var(--text-primary)',
         marginBottom: '1.5rem',
         fontFamily: 'var(--font-sans)'
       }}>
         TREND TRANSLATION
       </h2>
 
-      {/* 2x2 Grid */}
+      {/* Responsive Grid: 4 columns on desktop, 2x2 on mobile */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1.5rem 0.75rem',
-        marginBottom: '2rem'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '1.5rem 1.25rem',
+        marginBottom: '2.5rem'
       }}>
         {trends.map((trend, index) => (
           <div 
@@ -57,16 +54,18 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
               cursor: 'pointer',
               transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-4px)'}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-6px)'}
             onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
           >
             <div style={{
               width: '100%',
               aspectRatio: '3/4',
-              borderRadius: '12px',
+              borderRadius: '16px',
               overflow: 'hidden',
-              backgroundColor: '#f5f5f5',
-              marginBottom: '0.6rem'
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border-color)',
+              marginBottom: '0.75rem',
+              boxShadow: 'var(--shadow-sm)'
             }}>
               <img 
                 src={trend.image} 
@@ -75,10 +74,10 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
               />
             </div>
             <span style={{
-              fontSize: '0.9rem',
+              fontSize: '0.95rem',
               fontWeight: '700',
               textAlign: 'center',
-              color: '#111111',
+              color: 'var(--text-primary)',
               fontFamily: 'var(--font-sans)'
             }}>
               {trend.label}
@@ -89,32 +88,34 @@ export default function TrendTranslation({ onSignInClick, onTrendClick }) {
 
       {/* Join Club Banner */}
       <div style={{
-        backgroundColor: '#1c1c1c',
-        color: '#ffffff',
-        padding: '0.85rem 1rem',
-        borderRadius: '8px',
+        backgroundColor: 'var(--bg-secondary)',
+        color: 'var(--text-primary)',
+        border: '1px solid var(--border-color)',
+        padding: '1.25rem 1.75rem',
+        borderRadius: '12px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.15)'
+        boxShadow: 'var(--shadow-sm)'
       }}>
-        <span style={{ fontSize: '0.78rem', fontWeight: '500', fontFamily: 'var(--font-sans)' }}>
+        <span style={{ fontSize: '0.875rem', fontWeight: '600', fontFamily: 'var(--font-sans)' }}>
           Join Club, membership rewards await!
         </span>
         <button
           onClick={onSignInClick}
           style={{
-            backgroundColor: '#ffb200', // Gold/yellow button
-            color: '#111111',
+            backgroundColor: 'var(--accent-gold)',
+            color: 'var(--bg-primary)',
             border: 'none',
-            padding: '0.45rem 1rem',
-            borderRadius: '6px',
-            fontSize: '0.75rem',
+            padding: '0.6rem 1.4rem',
+            borderRadius: '100px',
+            fontSize: '0.8rem',
             fontWeight: '700',
             cursor: 'pointer',
             fontFamily: 'var(--font-sans)',
             outline: 'none',
-            transition: 'opacity 0.2s ease'
+            transition: 'opacity 0.2s ease',
+            boxShadow: 'var(--shadow-sm)'
           }}
           onMouseEnter={(e) => e.target.style.opacity = '0.9'}
           onMouseLeave={(e) => e.target.style.opacity = '1'}

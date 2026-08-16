@@ -170,69 +170,76 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
           </span>
         </div>
 
-        {/* 1. PRODUCT IMAGES CAROUSEL */}
-        <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden' }}>
-          <img 
-            src={activeImageIndex === 0 ? product.image : (product.detailImage || product.image)} 
-            alt={product.title} 
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
-
-          {/* Trendy Badge Overlay (bottom-left) */}
-          <span style={{
-            position: 'absolute',
-            bottom: '1rem',
-            left: '1rem',
-            backgroundColor: '#ffffff',
-            color: '#111111',
-            padding: '0.3rem 0.75rem',
-            fontSize: '0.7rem',
-            fontWeight: '700',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            borderRadius: '4px',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
-          }}>
-            Trendy
-          </span>
-
-          {/* Dots Carousel Indicators */}
-          <div style={{
-            position: 'absolute',
-            bottom: '1rem',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            display: 'flex',
-            gap: '0.5rem',
-            zIndex: 10
-          }}>
-            {[0, 1].map((idx) => (
-              <button 
-                key={idx}
-                onClick={() => setActiveImageIndex(idx)}
-                style={{
-                  width: activeImageIndex === idx ? '18px' : '6px',
-                  height: '6px',
-                  borderRadius: '99px',
-                  backgroundColor: activeImageIndex === idx ? '#ffffff' : 'rgba(255,255,255,0.6)',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease'
-                }}
-                aria-label={`Slide ${idx + 1}`}
+        {/* Desktop responsive columns wrapper */}
+        <div className="pdv-main-columns-wrapper">
+          {/* Left Column: Carousel */}
+          <div className="pdv-left-col">
+            {/* 1. PRODUCT IMAGES CAROUSEL */}
+            <div style={{ position: 'relative', width: '100%', aspectRatio: '3/4', backgroundColor: '#f5f5f5', overflow: 'hidden' }}>
+              <img 
+                src={activeImageIndex === 0 ? product.image : (product.detailImage || product.image)} 
+                alt={product.title} 
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               />
-            ))}
-          </div>
-        </div>
 
-        {/* 2. PRODUCT INFO & DETAILS */}
-        <div style={{ padding: '1.5rem 1.25rem' }}>
-          {/* Title */}
-          <h1 style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: '1.8rem',
-            fontWeight: '500',
+              {/* Trendy Badge Overlay (bottom-left) */}
+              <span style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: '1rem',
+                backgroundColor: '#ffffff',
+                color: '#111111',
+                padding: '0.3rem 0.75rem',
+                fontSize: '0.7rem',
+                fontWeight: '700',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                borderRadius: '4px',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.1)'
+              }}>
+                Trendy
+              </span>
+
+              {/* Dots Carousel Indicators */}
+              <div style={{
+                position: 'absolute',
+                bottom: '1rem',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                display: 'flex',
+                gap: '0.5rem',
+                zIndex: 10
+              }}>
+                {[0, 1].map((idx) => (
+                  <button 
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    style={{
+                      width: activeImageIndex === idx ? '18px' : '6px',
+                      height: '6px',
+                      borderRadius: '99px',
+                      backgroundColor: activeImageIndex === idx ? '#ffffff' : 'rgba(255,255,255,0.6)',
+                      border: 'none',
+                      padding: 0,
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                    aria-label={`Slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Info */}
+          <div className="pdv-right-col">
+            {/* 2. PRODUCT INFO & DETAILS */}
+            <div style={{ padding: '1.5rem 1.25rem' }}>
+              {/* Title */}
+              <h1 style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: '1.8rem',
+                fontWeight: '500',
             color: '#111111',
             marginBottom: '0.75rem',
             lineHeight: '1.25'
@@ -955,6 +962,8 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
           </section>
 
         </div>
+          </div>
+        </div>
       </div>
       
       {/* Scroll to Top floating arrow overlay */}
@@ -988,6 +997,10 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
           background-color: #ffffff;
           min-height: 100vh;
         }
+        .pdv-main-columns-wrapper {
+          display: flex;
+          flex-direction: column;
+        }
         @media (min-width: 768px) {
           .pdv-container-inner {
             max-width: 1280px;
@@ -995,6 +1008,17 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
             box-shadow: 0 10px 40px rgba(0,0,0,0.04);
             border-radius: 16px;
             margin: 1.5rem auto;
+          }
+          .pdv-main-columns-wrapper {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 3.5rem;
+            align-items: start;
+            padding: 1.5rem 0;
+          }
+          .pdv-left-col {
+            position: sticky;
+            top: 100px;
           }
         }
       `}</style>

@@ -35,11 +35,18 @@ export default function TrendCollectionView({ trendSlug, products, onBack, onPro
 
   return (
     <div className="trend-page-container">
-      {/* Breadcrumb Navigation */}
-      <div className="trend-breadcrumb container">
-        <span onClick={onBack} className="breadcrumb-link">Home</span>
-        <ChevronRight size={12} className="breadcrumb-separator" />
-        <span className="breadcrumb-active">Collection: {trend.label}</span>
+      {/* Prominent Top Bar Navigation */}
+      <div className="trend-top-bar container">
+        <button onClick={onBack} className="trend-back-btn">
+          <ArrowLeft size={16} />
+          <span>Back to Store</span>
+        </button>
+
+        <div className="trend-breadcrumb">
+          <span onClick={onBack} className="breadcrumb-link">Home</span>
+          <ChevronRight size={12} className="breadcrumb-separator" />
+          <span className="breadcrumb-active">Collection: {trend.label}</span>
+        </div>
       </div>
 
       {/* Editorial Header Section */}
@@ -56,11 +63,11 @@ export default function TrendCollectionView({ trendSlug, products, onBack, onPro
       {/* Curated Products Section */}
       <div className="trend-products-section container">
         <div className="section-header-row">
+          <span className="trend-product-count">{trendProducts.length} Exquisite Pieces</span>
           <button onClick={onBack} className="trend-back-btn">
             <ArrowLeft size={16} />
             <span>Back to Store</span>
           </button>
-          <span className="trend-product-count">{trendProducts.length} Exquisite Pieces</span>
         </div>
 
         {/* Product Grid */}
