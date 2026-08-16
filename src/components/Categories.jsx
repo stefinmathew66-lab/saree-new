@@ -23,7 +23,7 @@ export default function Categories({ onCategoryClick }) {
       fontFamily: 'var(--font-sans)',
       width: '100%'
     }}>
-      <div style={{ maxWidth: '480px', margin: '0 auto' }}>
+      <div className="categories-inner-wrapper">
         {/* Title */}
         <h2 style={{
           fontSize: '1.25rem',
@@ -37,14 +37,8 @@ export default function Categories({ onCategoryClick }) {
           CATEGORIES
         </h2>
 
-        {/* 4-Column Grid */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '1.25rem 0.5rem',
-          justifyItems: 'center',
-          alignItems: 'start'
-        }}>
+        {/* Grid */}
+        <div className="categories-grid-items">
           {CATEGORY_ITEMS.map((cat, index) => (
             <div 
               key={index}
@@ -111,6 +105,34 @@ export default function Categories({ onCategoryClick }) {
       </div>
 
       <style>{`
+        .categories-inner-wrapper {
+          max-width: 480px;
+          margin: 0 auto;
+        }
+        .categories-grid-items {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 1.25rem 0.5rem;
+          justify-items: center;
+          align-items: start;
+        }
+        @media (min-width: 768px) {
+          .categories-inner-wrapper {
+            max-width: 1280px;
+            padding: 0 1.5rem;
+          }
+          .categories-grid-items {
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 2rem 1.25rem;
+          }
+          .category-grid-item {
+            max-width: 110px !important;
+          }
+          .category-circle-frame {
+            width: 90px !important;
+            height: 90px !important;
+          }
+        }
         .category-grid-item:hover .category-circle-frame {
           transform: translateY(-2px);
           box-shadow: 0 4px 10px rgba(0,0,0,0.06);

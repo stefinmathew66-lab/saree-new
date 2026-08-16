@@ -5,14 +5,7 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
   const velnoraProducts = products.filter(p => p.category === 'Velnora');
 
   return (
-    <section style={{
-      padding: '2rem 1.25rem 2rem 1.25rem',
-      backgroundColor: '#ffffff',
-      fontFamily: 'var(--font-sans)',
-      maxWidth: '480px',
-      margin: '0 auto',
-      borderTop: '1px solid #f3f4f6'
-    }}>
+    <section className="velnora-section-wrapper">
       <h2 style={{
         fontSize: '1.25rem',
         fontWeight: '800',
@@ -39,7 +32,7 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
           cursor: 'pointer',
           transition: 'transform 0.2s ease'
         }}
-        className="campaign-banner-hover"
+        className="campaign-banner-hover velnora-banner"
       >
         <img 
           src="/velnora_collection_banner.jpg" 
@@ -179,6 +172,14 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
       </div>
 
       <style>{`
+        .velnora-section-wrapper {
+          padding: 2rem 1.25rem;
+          background-color: #ffffff;
+          font-family: var(--font-sans);
+          max-width: 480px;
+          margin: 0 auto;
+          border-top: 1px solid #f3f4f6;
+        }
         .velnora-products-scroll-container {
           -webkit-overflow-scrolling: touch;
           scroll-behavior: smooth;
@@ -197,6 +198,21 @@ export default function VelnoraCollection({ products, onProductClick, onBannerCl
         }
         .velnora-products-scroll-container::-webkit-scrollbar-thumb:hover {
           background: #9ca3af;
+        }
+
+        @media (min-width: 768px) {
+          .velnora-section-wrapper {
+            max-width: 1280px;
+            padding: 3rem 2rem;
+          }
+          .velnora-banner {
+            aspect-ratio: 21/9 !important;
+            border-radius: 16px !important;
+          }
+          .velnora-products-scroll-container {
+            grid-auto-columns: minmax(180px, 220px) !important;
+            gap: 1.25rem 1rem !important;
+          }
         }
       `}</style>
     </section>

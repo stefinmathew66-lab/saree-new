@@ -16,7 +16,7 @@ export default function SpecialOffers({ onExploreClick }) {
       fontFamily: 'var(--font-sans)',
       width: '100%'
     }}>
-      <div style={{ maxWidth: '480px', margin: '0 auto' }}>
+      <div className="special-offers-container">
         {/* Title */}
         <h2 style={{
           fontSize: '1.25rem',
@@ -466,6 +466,16 @@ export default function SpecialOffers({ onExploreClick }) {
       </div>
 
       <style>{`
+        .special-offers-container {
+          max-width: 480px;
+          margin: 0 auto;
+        }
+        @media (min-width: 768px) {
+          .special-offers-container {
+            max-width: 1280px;
+            padding: 0 1.5rem;
+          }
+        }
         /* Hide scrollbar for Chrome, Safari and Opera */
         .promo-cards-scrollable::-webkit-scrollbar {
           display: none;

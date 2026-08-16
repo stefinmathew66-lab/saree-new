@@ -137,7 +137,7 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
     }}>
       
       {/* Detail view container */}
-      <div style={{ maxWidth: '480px', margin: '0 auto', backgroundColor: '#ffffff', minHeight: '100vh' }}>
+      <div className="pdv-container-inner">
         
         {/* Navigation Breadcrumb / Top Bar */}
         <div style={{
@@ -980,6 +980,24 @@ export default function ProductDetailView({ product, onBack, onAddToCart, allPro
       >
         <ChevronUp size={20} />
       </button>
+
+      <style>{`
+        .pdv-container-inner {
+          max-width: 480px;
+          margin: 0 auto;
+          background-color: #ffffff;
+          min-height: 100vh;
+        }
+        @media (min-width: 768px) {
+          .pdv-container-inner {
+            max-width: 1280px;
+            padding: 1.5rem 2.5rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+            border-radius: 16px;
+            margin: 1.5rem auto;
+          }
+        }
+      `}</style>
     </div>
   );
 }

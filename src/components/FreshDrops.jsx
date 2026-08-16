@@ -30,14 +30,7 @@ export default function FreshDrops({ products, onProductClick, onBannerClick, wi
   };
 
   return (
-    <section style={{
-      padding: '2rem 1.25rem',
-      backgroundColor: '#ffffff',
-      fontFamily: 'var(--font-sans)',
-      maxWidth: '480px',
-      margin: '0 auto',
-      borderTop: '1px solid #f3f4f6'
-    }}>
+    <section className="fresh-drops-section-wrapper">
       
       {/* Main Campaign Banner (Clickable) */}
       <div 
@@ -53,7 +46,7 @@ export default function FreshDrops({ products, onProductClick, onBannerClick, wi
           cursor: 'pointer',
           transition: 'transform 0.2s ease'
         }}
-        className="campaign-banner-hover"
+        className="campaign-banner-hover fresh-drops-banner"
       >
         <img 
           src="/fresh_drops_banner.jpg" 
@@ -156,12 +149,8 @@ export default function FreshDrops({ products, onProductClick, onBannerClick, wi
         </button>
       </div>
 
-      {/* 2-Column Product Grid */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '1.25rem 0.75rem'
-      }}>
+      {/* Product Grid */}
+      <div className="fresh-drops-grid">
         {displayedProducts.map((product) => {
           const discountPercentage = product.price > 10000 ? 35 : 10;
           const originalPrice = Math.round(product.price * (1 + discountPercentage / 100));
@@ -326,6 +315,37 @@ export default function FreshDrops({ products, onProductClick, onBannerClick, wi
           );
         })}
       </div>
+
+      <style>{`
+        .fresh-drops-section-wrapper {
+          padding: 2rem 1.25rem;
+          background-color: #ffffff;
+          font-family: var(--font-sans);
+          max-width: 480px;
+          margin: 0 auto;
+          border-top: 1px solid #f3f4f6;
+        }
+        .fresh-drops-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.25rem 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+          .fresh-drops-section-wrapper {
+            max-width: 1280px;
+            padding: 3rem 2rem;
+          }
+          .fresh-drops-banner {
+            aspect-ratio: 21/9 !important;
+            border-radius: 16px !important;
+          }
+          .fresh-drops-grid {
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem 1.25rem;
+          }
+        }
+      `}</style>
     </section>
   );
 }
