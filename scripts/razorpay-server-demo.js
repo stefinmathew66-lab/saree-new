@@ -25,8 +25,8 @@ app.use(express.json());
 
 // Load keys from environment
 const PORT = process.env.PORT || 5000;
-const KEY_ID = process.env.RAZORPAY_KEY_ID || 'rzp_test_YOUR_KEY_ID_HERE';
-const KEY_SECRET = process.env.RAZORPAY_KEY_SECRET || 'YOUR_KEY_SECRET_HERE';
+const KEY_ID = process.env.RAZORPAY_KEY_ID || process.env.VITE_RAZORPAY_KEY_ID;
+const KEY_SECRET = process.env.RAZORPAY_KEY_SECRET;
 
 /**
  * Endpoint to create a Razorpay Order

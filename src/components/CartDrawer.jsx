@@ -225,26 +225,17 @@ export default function CartDrawer({ isOpen, onClose, cartItems, onUpdateQty, on
       return;
     }
 
-    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_YOUR_KEY_ID_HERE';
+    const keyId = import.meta.env.VITE_RAZORPAY_KEY_ID;
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    // Check for dummy key to offer simulation mode
-    if (keyId === 'rzp_test_YOUR_KEY_ID_HERE') {
-      const confirmSimulation = window.confirm(
-        "Notice: A placeholder Razorpay Key ID is configured. " +
-        "Would you like to simulate a successful payment process to test the order workflow?\n\n" +
-        "Click [OK] to simulate success, or [Cancel] to attempt opening the Razorpay widget."
-      );
-      if (confirmSimulation) {
-        // Wait 1 second to simulate payment processing
-        setTimeout(() => {
-          processSuccessfulPayment({
-            razorpay_payment_id: `rzp_sim_${Math.random().toString(36).substr(2, 9)}`,
-            method: 'Simulated UPI (Zero Fee)'
-          });
-        }, 1000);
-        return;
-      }
+    if (!keyId) {
+      showAlert({
+        title: "Payment Gateway Error",
+        message: "Razorpay Key ID is not configured. Please ensure VITE_RAZORPAY_KEY_ID is set in your environment.",
+        type: "error"
+      });
+      setIsSubmitting(false);
+      return;
     }
 
     // Load Razorpay Script
