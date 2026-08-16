@@ -221,17 +221,7 @@ export default function SpecialOffers({ onExploreClick }) {
           }}
         >
           {/* Card 1: Clearance Sale */}
-          <div style={{
-            flex: '0 0 148px', /* exact fit on mobile width */
-            scrollSnapAlign: 'start',
-            backgroundColor: '#ffffff',
-            borderRadius: '12px',
-            border: '1.5px solid #f0725a',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative'
-          }}>
+          <div className="promo-card-item">
             {/* Header label */}
             <div style={{
               backgroundColor: '#e65c49',
@@ -248,8 +238,7 @@ export default function SpecialOffers({ onExploreClick }) {
             </div>
 
             {/* Image Frame */}
-            <div style={{
-              height: '160px',
+            <div className="promo-card-image-frame" style={{
               position: 'relative',
               width: '100%',
               backgroundColor: '#f6f6f6'
@@ -302,17 +291,7 @@ export default function SpecialOffers({ onExploreClick }) {
           </div>
 
           {/* Card 2: Dresses & Co-ords */}
-          <div style={{
-            flex: '0 0 148px',
-            scrollSnapAlign: 'start',
-            backgroundColor: '#ffffff',
-            borderRadius: '12px',
-            border: '1.5px solid #f0725a',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative'
-          }}>
+          <div className="promo-card-item">
             {/* Header label */}
             <div style={{
               backgroundColor: '#e65c49',
@@ -329,8 +308,7 @@ export default function SpecialOffers({ onExploreClick }) {
             </div>
 
             {/* Image Frame */}
-            <div style={{
-              height: '160px',
+            <div className="promo-card-image-frame" style={{
               position: 'relative',
               width: '100%',
               backgroundColor: '#f6f6f6'
@@ -383,17 +361,7 @@ export default function SpecialOffers({ onExploreClick }) {
           </div>
 
           {/* Card 3: Tops & Tee */}
-          <div style={{
-            flex: '0 0 148px',
-            scrollSnapAlign: 'start',
-            backgroundColor: '#ffffff',
-            borderRadius: '12px',
-            border: '1.5px solid #f0725a',
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column',
-            position: 'relative'
-          }}>
+          <div className="promo-card-item">
             {/* Header label */}
             <div style={{
               backgroundColor: '#e65c49',
@@ -410,8 +378,7 @@ export default function SpecialOffers({ onExploreClick }) {
             </div>
 
             {/* Image Frame */}
-            <div style={{
-              height: '160px',
+            <div className="promo-card-image-frame" style={{
               position: 'relative',
               width: '100%',
               backgroundColor: '#f6f6f6'
@@ -470,10 +437,47 @@ export default function SpecialOffers({ onExploreClick }) {
           max-width: 480px;
           margin: 0 auto;
         }
+        .promo-cards-scrollable {
+          display: flex;
+          gap: 0.75rem;
+          overflow-x: auto;
+          padding-bottom: 0.5rem;
+          scrollbar-width: none;
+          ms-overflow-style: none;
+          scroll-snap-type: x mandatory;
+          -webkit-overflow-scrolling: touch;
+        }
+        .promo-card-item {
+          flex: 0 0 148px;
+          scroll-snap-align: start;
+          background-color: #ffffff;
+          border-radius: 12px;
+          border: 1.5px solid #f0725a;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          position: relative;
+        }
+        .promo-card-image-frame {
+          height: 160px;
+        }
         @media (min-width: 768px) {
           .special-offers-container {
             max-width: 1280px;
             padding: 0 1.5rem;
+          }
+          .promo-cards-scrollable {
+            display: grid !important;
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 1.5rem !important;
+            overflow-x: visible !important;
+          }
+          .promo-card-item {
+            flex: none !important;
+            width: 100% !important;
+          }
+          .promo-card-image-frame {
+            height: 240px !important;
           }
         }
         /* Hide scrollbar for Chrome, Safari and Opera */
